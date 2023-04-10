@@ -3,9 +3,9 @@
 import mysql from "mysql"
 var connection = mysql.createConnection({
   host     : 'localhost',
-  user     : 'root',
-  password : 'password',
-  database : 'account'
+  user     : 'martaApp',
+  password : 'marta@DB23',
+  database : 'martaplus'
 });
 export default connection
 
