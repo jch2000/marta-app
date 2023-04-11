@@ -49,7 +49,7 @@ app.post("/login", (req, res) => {
     const password = req.body.password;
   
     db.query(
-      "SELECT * FROM customers WHERE email = ? AND password = ?",
+      "SELECT * FROM customer WHERE email = ? AND userpassword = ?",
       [email,password],
       (error, result) => {
         if (error) {
