@@ -14,7 +14,7 @@ app.listen(3001, () => {
 const db =  mysql.createPool({
   host     : 'localhost',
   user     : 'martaApp',
-  password : 'marta@DB23',
+  password : '',
   database : 'martaplus'
  });
  
@@ -23,7 +23,7 @@ const db =  mysql.createPool({
 app.post('/signup', (req,res)=> {
 
     const first_name = req.body.first_name;
-    const last_name = req.body.first_name; 
+    const last_name = req.body.last_name; 
     const email = req.body.email;
     const phone = req.body.phone;
     const password = req.body.password;
@@ -33,7 +33,7 @@ app.post('/signup', (req,res)=> {
       });
 
     db.query(
-        "INSERT INTO customer (first_name, last_name, email, phone, password) VALUES (?,?,?,?,?",
+        "INSERT INTO customer (first_name, last_name, email, phone, userpassword) VALUES (?,?,?,?,?)",
         [first_name,last_name, email, phone, password ],
         (error, result)=> {
             if(error){
