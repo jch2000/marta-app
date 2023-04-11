@@ -8,6 +8,7 @@
         - install react-dom : `$ npm i react-router-dom`
         - Install axios     : `$ npm install axios`
         - Install mysql     : `$ npm install mysql`
+        - Install mui       : `$ npm install @mui/material @emotion/react @emotion/styled`
 - After installing dependinces run : `$ npm run` to open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
 # React and VSC Resources 
