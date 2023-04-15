@@ -28,6 +28,8 @@ app.post('/signup', (req,res)=> {
     const phone = req.body.phone;
     const password = req.body.password;
 
+    console.log("Signed up");
+
     db.on('error', function(err) {
         console.log("[mysql error]",err);
       });
@@ -37,9 +39,11 @@ app.post('/signup', (req,res)=> {
         [first_name,last_name, email, phone, password ],
         (error, result)=> {
             if(error){
-                throw error
+                console.log(error);
             }
-            console.log(error); 
+            else {
+              console.log("registration successful", result) ;
+            }
         }
     )
 });
@@ -47,22 +51,23 @@ app.post('/signup', (req,res)=> {
 app.post("/login", (req, res) => {
     const email = req.body.email;
     const password = req.body.password;
-  
+    console.log(`your email: ${email}, password: ${password}`);
+
     db.query(
       "SELECT * FROM customer WHERE email = ? AND userpassword = ?",
       [email,password],
       (error, result) => {
         if (error) {
-          throw error
+          res.send({error: error});
         }
-        console.log(result)
-  
-        if (result.length > 0) {
-            console.log(result);          
+        else if(result.length != 0) {
+          console.log(result);
+          console.log(`message:"Login successful" with email: ${email}`) ;
         } else {
-          console.log({ message: "Wrong username/password" });
+          console.log(`Wrong email/password! with email: ${email}, and password: ${password}`);
         }
       }
     );
+
   });
   

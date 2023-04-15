@@ -10,8 +10,8 @@ function Login() {
 
     const [LoginStatus, setLoginStatus] = useState("");
     
-    const handleSubmit = () => {
-        Axios.post("http://localhost:3001/login", {
+    const handleSubmit = async () => {
+        await Axios.post("/login", {
             email: email, 
             password: password,
         }).then ((response)=> {
@@ -23,12 +23,15 @@ function Login() {
         });
     };
 
-    useEffect(()=> {
-        Axios.get("http://localhost:3001/login").then((response)=>{
-            if(response.data.loggedIn ===true){
-                setLoginStatus(response.data.user[0].email)
-            }
-        });
+    useEffect( ()=> {
+        async function getData() {
+            await Axios.get("/login", {params : {email : email, password: password}}).then((response)=>{
+                if(response.data.loggedIn ===true){
+                    setLoginStatus(response.data.user[0].email)
+                }
+            });
+        }
+        
     });
 
 
