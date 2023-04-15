@@ -5,9 +5,9 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import Signup from './components/signup/signup';
-import Login from './components/login/login'
+import Login from './components/login/login';
 import Home from './components/homepage/home';
-import planTrip from './components/planTrip/planTrip'
+import PlanTrip from './components/planTrip/planTrip';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
@@ -19,7 +19,7 @@ root.render(
       <Route path='/Home' element ={<Home />}/>
       <Route path='/Signup' element ={<Signup />}/>
       <Route path='/Login' element ={<Login />}/>
-      <Route path='/planTrip' element ={<planTrip />}/>
+      <Route path='/planTrip' element ={<PlanTrip />}/>
     </Routes>
     </BrowserRouter>
   </React.StrictMode>
