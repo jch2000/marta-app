@@ -87,37 +87,50 @@ app.post("/login", (req, res) => {
     const stationInput = req.body.stationInput;
     const lineInput = req.body.lineInput;
     const dirInput = req.body.dirInput;
-    const position = "";
-    // const lineID = 0
+    let query_1_return;
+    let position = 'x';
+    let lineID = 0;
   
     console.log(`user's input station: ${stationInput}, line: ${lineInput}, dir: ${dirInput}`);
 
-    // db.query(
-    //   "SELECT position, line_id FROM StationHasRoute WHERE station_name = ? AND line_id = (SELECT id FROM Line WHERE color = ? AND direction = ?)",
-    //   [stationInput,lineInput, dirInput],
-    //   (error, result) => {
-    //     if (error) {
-    //       console.log(error)
-    //       console.log(`Combination ${stationInput}, ${lineInput}, ${dirInput} is invalid`);
-    //     } else {
-    //       position = result[0]["position"];
-    //       console.log(position)
-    //       // lineID = result[0]["line_id"]
-    //     }
-    //   }
-    // )
+    const queryFunc = () =>{
+      return new Promise((resolve, reject)=>{
+        db.query(
+          "SELECT position, line_id FROM StationHasRoute WHERE station_name = ? AND line_id = (SELECT id FROM Line WHERE color = ? AND direction = ?)",
+          [stationInput,lineInput, dirInput], 
+          (error, result) => {
+            if (error) {
+              console.log(error)
+              console.log(`Combination ${stationInput}, ${lineInput}, ${dirInput} is invalid`);
+            } else {
+              query_1_return = result;
+              // position = result["position"];
+              // lineID = result["line_id"];
+              resolve();
+              console.log(result);
+            }
+          });
+      });
+    };
+    
+    queryFunc().then((val)=>{
+      position = query_1_return[0]["position"];
+      lineID = query_1_return[0]["line_id"];
+      console.log(position, lineID);
 
-    // db.query(
-    //   'SELECT StationHasRoute.station_name, TrainSchedule.? FROM TrainSchedule INNER JOIN StationHasRoute ON StationHasRoute.line_id = TrainSchedule.line_id WHERE station_name = ?;'
-    //   [position, stationInput],
-    //   (error, result) => {
-    //     if (error) {
-    //       console.log(error);
-    //     } else {
-    //       console.log(`Here are the train time for ${stationInput} station on the ${dirInput} ${lineInput} line:`);
-    //       console.log(result);
-    //     }
-    //   }
+      let query_2 = "SELECT StationHasRoute.station_name, TrainSchedule." + position + " FROM TrainSchedule INNER JOIN StationHasRoute ON StationHasRoute.line_id = TrainSchedule.line_id WHERE station_name = '" + stationInput + "' AND StationHasRoute.line_id = " + lineID;
+      db.query(
+        query_2,
+        (error, result) => {
+          if (error) {
+            console.log(error);
+          } else {
+            console.log(`Here are the train time for ${stationInput} station on the ${dirInput} ${lineInput} line:`);
+            console.log(result);
+          }
+        }
+      )
+    });
 
-    // )
+    
   });
