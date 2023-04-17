@@ -77,9 +77,9 @@ app.post("/login", (req, res) => {
     db.query("SELECT station_name, (3959 * acos(cos(radians(?)) * cos(radians(latitude)) * cos(radians(longitude) - radians(?)) + sin(radians(?)) * sin(radians(latitude)))) AS distance FROM Station ORDER BY distance LIMIT 0, 1;", [userLat, userLng, userLat],(error, result) => {
       if (error) {
         res.send({error: error});
-      } else {
-        res.send("Response...");
+        return;
       }
+      res.send(result);
     })
   });
 
