@@ -41,7 +41,6 @@ CREATE TABLE martapass (
 
 CREATE TABLE Station (
 	station_name VARCHAR(20),
-    address VARCHAR(60),
     latitude DOUBLE,
     longitude DOUBLE,
     PRIMARY KEY(station_name)
