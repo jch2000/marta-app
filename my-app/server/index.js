@@ -70,10 +70,3 @@ app.post("/login", (req, res) => {
     );
 
   });
-
-  app.post("/login", (req, res) => {
-    const userLat = req.body.userLat;
-    const userLng = req.body.userLng;
-    console.log(`your email: ${userLat}, password: ${userLng}`);
-  }); 
-  
