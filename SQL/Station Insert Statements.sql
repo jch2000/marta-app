@@ -34,5 +34,5 @@ INSERT INTO Station(station_name, latitude, longitude) VALUES("Oakland City","33
 INSERT INTO Station(station_name, latitude, longitude) VALUES("Peachtree Center","33.7580","-84.3878");
 INSERT INTO Station(station_name, latitude, longitude) VALUES("Sandy Springs","33.9330","-84.3520");
 INSERT INTO Station(station_name, latitude, longitude) VALUES("Vine City","33.7569","-84.4039");
-INSERT INTO Station(station_name, latitude, longitude) VALUES("West End","33.7360, -84.4136");
+INSERT INTO Station(station_name, latitude, longitude) VALUES("West End","33.7360","-84.4136");
 INSERT INTO Station(station_name, latitude, longitude) VALUES("West Lake","33.7531","-84.4465");
