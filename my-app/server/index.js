@@ -1,14 +1,14 @@
 const express = require("express");
 const cors = require("cors");
 const app = express();
-const mysql = require ("mysql")
+const mysql = require ("mysql");
 
 const PORT = process.env.PORT || 3001;
 app.use(express.json());
 app.use(cors());
 app.listen(3001, () => {
    console.log("running server");
-   console.log(`Server is listening on port ${PORT}`)
+   console.log(`Server is listening on port ${PORT}`);
 });
 
 const db =  mysql.createPool({
@@ -18,7 +18,7 @@ const db =  mysql.createPool({
   database : 'martaplus'
  });
  
- module.exports = db;
+module.exports = db;
 
 app.post('/signup', (req,res)=> {
 
@@ -36,7 +36,7 @@ app.post('/signup', (req,res)=> {
 
     db.query(
         "INSERT INTO customer (first_name, last_name, email, phone, userpassword) VALUES (?,?,?,?,?)",
-        [first_name,last_name, email, phone, password ],
+        [first_name, last_name, email, phone, password],
         (error, result)=> {
             if(error){
                 console.log(error);
@@ -67,6 +67,20 @@ app.post("/login", (req, res) => {
           console.log(`Wrong email/password! with email: ${email}, and password: ${password}`);
         }
       }
-    );
-
+    )
   });
+
+  app.post("/nearestStation", (req, res) => {
+    const userLat = req.body.userLat;
+    const userLng = req.body.userLng;
+    console.log("Testing");
+
+    db.query("SELECT station_name, (3959 * acos(cos(radians(?)) * cos(radians(latitude)) * cos(radians(longitude) - radians(?)) + sin(radians(?)) * sin(radians(latitude)))) AS distance FROM Station ORDER BY distance LIMIT 0, 1;", [userLat, userLng, userLat],(error, result) => {
+      if (error) {
+        res.send({error: error});
+      } else {
+        res.send("Response...");
+      }
+    })
+  });
+  

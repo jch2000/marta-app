@@ -1,21 +1,29 @@
 import './planTrip.css'
 import Navbar from '../Navbar/navbar';
-import { createFilterOptions } from '@mui/material';
+import Axios from 'axios';
 
-function FindNearestStation() {
-    const successCallback = (position) => {
-        let user_lat = position.coords.latitude;
-        let user_lng = position.coords.longitude;
+function FindNearestStation() {    
+        const successCallback = (position) => {
+        let userLat = position.coords.latitude;
+        let userLng = position.coords.longitude;
 
-        /* need to insert lng & lat into Station
-
-        result = db.query(SELECT Name, MAX((3959 * acos(cos(radians(user_lat)) * cos(radians(lat)) * cos( radians(lng) - radians(user_lng)) + sin(radians(37)) * sin( radians(lat))))) AS distance 
-        FROM Station;)
-        */
-    };
+        const handleSubmit = async () => {
+            await Axios.post("/nearestStation", {
+                userLat: userLat, 
+                userLng: userLng,
+            }).then ((response)=> {
+                if (response) {
+                    const ele = document.getElementById('nearestStation');
+                    ele.textContent = `Your nearest MARTA station is ${response.data[0].station_name} and is ${parseFloat(response.data[0].distance).toFixed(2)} miles away!`;
+                }
+            });
+        }
+        handleSubmit();
+    }
     const errorCallback = (error) => {
         console.log(error);
-    };
+    }
+
     navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
 }
 
@@ -25,7 +33,7 @@ function PlanTrip() {
             <Navbar/>
             <h1>Plan a Trip</h1>
             <FindNearestStation/>
-
+            <div id='nearestStation'></div>
             <form>
                 <label for="startStation">Start Station</label>
                 <select name="startStation" id="startStation">
