@@ -6,9 +6,9 @@ const Navbar = () => {
         <div>
             <div id="topStrip"></div>
 
-            <div class="navigation">
+            <div className="navigation">
 
-                <div class="pageTitle"><h1>MARTA+</h1></div>
+                <div className="pageTitle"><h1>MARTA+</h1></div>
 
                 <ul>
                 <li>
@@ -17,11 +17,15 @@ const Navbar = () => {
                 <li>
                     <Link to='/Login'>Login</Link>
                 </li>
-                <li>
+                {/* maybe not needed since signup is linked on login */}
+                {/* <li>
                     <Link to='/Signup'>Signup</Link>
-                </li>
+                </li> */}
                 <li>
                     <Link to='/planTrip'>Plan a Trip</Link>
+                </li>
+                <li>
+                    <Link to='/schedule'>Schedule</Link>
                 </li>
                 </ul>
             </div>

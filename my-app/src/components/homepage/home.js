@@ -7,11 +7,12 @@ function Home() {
     return (
         <div className="home">
             <Navbar/>
-            <div class="homeContent">
+            <div className="homeContent">
                 <h2>Everything you need to navigate through Atlanta</h2>
-                <div class="cards">
-                    <Link to='/signup'><button class="button">Create An Account</button></Link>
-                    <Link to='/planTrip'><button class="button">Plan A Trip</button></Link>
+                <div className="cards">
+                    <Link to='/signup'><button className="button">Create An Account</button></Link>
+                    <Link to='/planTrip'><button className="button">Plan A Trip</button></Link>
+                    <Link to='/schedule'><button className="button">View Schedules</button></Link>
                 </div>
             </div>
         </div>

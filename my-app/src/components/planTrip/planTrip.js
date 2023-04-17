@@ -14,7 +14,7 @@ function FindNearestStation() {
             }).then ((response)=> {
                 if (response) {
                     const ele = document.getElementById('nearestStation');
-                    ele.textContent = `Your nearest MARTA station is ${response.data[0].station_name} and is ${parseFloat(response.data[0].distance).toFixed(2)} miles away!`;
+                    ele.innerText = `Your nearest MARTA station is ${response.data[0].station_name} and is ${parseFloat(response.data[0].distance).toFixed(2)} miles away!`;
                 }
             });
         }

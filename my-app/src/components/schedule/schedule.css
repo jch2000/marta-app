@@ -1,0 +1,46 @@
+/* .Schedule {
+ } */
+  
+ .search {
+    display: flex;
+    flex-direction: column;
+ }
+
+ .search h3 {
+   text-align: center;
+ }
+
+ .entry {
+   display: flex;
+   flex-direction: row;
+   align-items: center;
+   justify-content: center;
+ }
+ 
+ label {
+   margin-right: 0.5vw;
+   font-size: 1.5vw;
+ }
+ 
+ select {
+    width: 15vw;
+    height: 1vw;
+    padding: 1vw;
+    font-size: 1.3vw;
+    color: black;
+    border: solid #f37521;
+    border-radius: 5px;
+    /* border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px; */
+ }
+
+ .submit {
+    padding: 0.55vw;
+    font-size: 1vw;
+    background-color: #f37521;
+    border-radius: 5px;
+    margin-left: 1vw;
+    /* border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px; */
+ }
+ 

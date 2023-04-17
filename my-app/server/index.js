@@ -73,7 +73,6 @@ app.post("/login", (req, res) => {
   app.post("/nearestStation", (req, res) => {
     const userLat = req.body.userLat;
     const userLng = req.body.userLng;
-    console.log("Testing");
 
     db.query("SELECT station_name, (3959 * acos(cos(radians(?)) * cos(radians(latitude)) * cos(radians(longitude) - radians(?)) + sin(radians(?)) * sin(radians(latitude)))) AS distance FROM Station ORDER BY distance LIMIT 0, 1;", [userLat, userLng, userLat],(error, result) => {
       if (error) {
@@ -83,4 +82,42 @@ app.post("/login", (req, res) => {
       }
     })
   });
+
+  app.post("/schedule", (req, res) => {
+    const stationInput = req.body.stationInput;
+    const lineInput = req.body.lineInput;
+    const dirInput = req.body.dirInput;
+    const position = "";
+    // const lineID = 0
   
+    console.log(`user's input station: ${stationInput}, line: ${lineInput}, dir: ${dirInput}`);
+
+    // db.query(
+    //   "SELECT position, line_id FROM StationHasRoute WHERE station_name = ? AND line_id = (SELECT id FROM Line WHERE color = ? AND direction = ?)",
+    //   [stationInput,lineInput, dirInput],
+    //   (error, result) => {
+    //     if (error) {
+    //       console.log(error)
+    //       console.log(`Combination ${stationInput}, ${lineInput}, ${dirInput} is invalid`);
+    //     } else {
+    //       position = result[0]["position"];
+    //       console.log(position)
+    //       // lineID = result[0]["line_id"]
+    //     }
+    //   }
+    // )
+
+    // db.query(
+    //   'SELECT StationHasRoute.station_name, TrainSchedule.? FROM TrainSchedule INNER JOIN StationHasRoute ON StationHasRoute.line_id = TrainSchedule.line_id WHERE station_name = ?;'
+    //   [position, stationInput],
+    //   (error, result) => {
+    //     if (error) {
+    //       console.log(error);
+    //     } else {
+    //       console.log(`Here are the train time for ${stationInput} station on the ${dirInput} ${lineInput} line:`);
+    //       console.log(result);
+    //     }
+    //   }
+
+    // )
+  });
