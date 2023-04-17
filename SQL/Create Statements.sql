@@ -40,38 +40,38 @@ CREATE TABLE martapass (
 );
 
 CREATE TABLE Station (
-	station_name VARCHAR(20),
+	  station_name VARCHAR(30),
     latitude DOUBLE,
     longitude DOUBLE,
     PRIMARY KEY(station_name)
 );
 
 CREATE TABLE Line (
-	id smallint unsigned auto_increment,
-	color VARCHAR(5),
+    id smallint unsigned auto_increment,
+    color VARCHAR(5),
     direction CHAR(1),
     PRIMARY KEY(id)
 );
 
 CREATE TABLE Route (
-	id smallint unsigned AUTO_INCREMENT,
-	color VARCHAR(5),
+	  id smallint unsigned AUTO_INCREMENT,
+	  color VARCHAR(5),
     direction CHAR(1),
-	st_1 VARCHAR(20),
-    st_2 VARCHAR(20),
-    st_3 VARCHAR(20),
-    st_4 VARCHAR(20),
-    st_5 VARCHAR(20),
-    st_6 VARCHAR(20),
-    st_7 VARCHAR(20),
-    st_8 VARCHAR(20),
-    st_9 VARCHAR(20),
-    st_10 VARCHAR(20),
-    st_11 VARCHAR(20),
-    st_12 VARCHAR(20),
-	st_13 VARCHAR(20),
-    st_14 VARCHAR(20),
-    st_15 VARCHAR(20),
+	  st_1 VARCHAR(30),
+    st_2 VARCHAR(30),
+    st_3 VARCHAR(30),
+    st_4 VARCHAR(30),
+    st_5 VARCHAR(30),
+    st_6 VARCHAR(30),
+    st_7 VARCHAR(30),
+    st_8 VARCHAR(30),
+    st_9 VARCHAR(30),
+    st_10 VARCHAR(30),
+    st_11 VARCHAR(30),
+    st_12 VARCHAR(30),
+	  st_13 VARCHAR(30),
+    st_14 VARCHAR(30),
+    st_15 VARCHAR(30),
     PRIMARY KEY (id),
 --     FOREIGN KEY(color) references Line(color),
 --     FOREIGN KEY(direction) references Line(direction),
@@ -87,14 +87,14 @@ CREATE TABLE Route (
     FOREIGN KEY(st_10) references Station(station_name),
     FOREIGN KEY(st_11) references Station(station_name),
     FOREIGN KEY(st_12) references Station(station_name),
-	FOREIGN KEY(st_13) references Station(station_name),
+	  FOREIGN KEY(st_13) references Station(station_name),
     FOREIGN KEY(st_14) references Station(station_name),
     FOREIGN KEY(st_15) references Station(station_name)
 );
 
 CREATE TABLE TrainSchedule (
-	id smallint unsigned auto_increment,
-	color VARCHAR(5) NOT NULL,
+	  id smallint unsigned auto_increment,
+	  color VARCHAR(5) NOT NULL,
     direction CHAR(1) NOT NULL,
     st_1 TIME,
     st_2 TIME,
@@ -108,7 +108,7 @@ CREATE TABLE TrainSchedule (
     st_10 TIME,
     st_11 TIME,
     st_12 TIME,
-	st_13 TIME,
+	  st_13 TIME,
     st_14 TIME,
     st_15 TIME,
     PRIMARY KEY(id)
