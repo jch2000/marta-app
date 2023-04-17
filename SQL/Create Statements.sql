@@ -1,4 +1,22 @@
-CREATE DATABASE martaplus;
+CREATE TABLE customer (
+  customer_id smallint unsigned NOT NULL AUTO_INCREMENT,
+  first_name varchar(45) NOT NULL,
+  last_name varchar(45) NOT NULL,
+  email varchar(45) UNIQUE NOT NULL,
+  phone varchar(10) DEFAULT NULL,
+  username varchar(20) UNIQUE DEFAULT NULL,
+  userpassword varchar(20) DEFAULT NULL,
+  PRIMARY KEY (customer_id)
+);
+
+CREATE TABLE ticket (
+  customer_id smallint unsigned DEFAULT NULL,
+  ticket_id smallint unsigned NOT NULL,
+  issued date DEFAULT NULL,
+  expiration date DEFAULT NULL,
+  PRIMARY KEY (ticket_id),
+  FOREIGN KEY (customer_id) REFERENCES customer (customer_id)
+);
 
 CREATE TABLE breezecard (
   ticket_id smallint unsigned NOT NULL,
@@ -14,17 +32,6 @@ CREATE TABLE breezeticket (
   FOREIGN KEY (ticket_id) REFERENCES ticket (ticket_id)
 );
 
-CREATE TABLE customer (
-  customer_id smallint unsigned NOT NULL AUTO_INCREMENT,
-  first_name varchar(45) NOT NULL,
-  last_name varchar(45) NOT NULL,
-  email varchar(45) NOT NULL,
-  phone varchar(10) DEFAULT NULL,
-  username varchar(20) DEFAULT NULL,
-  userpassword varchar(20) DEFAULT NULL,
-  PRIMARY KEY (customer_id)
-);
-
 CREATE TABLE martapass (
   ticket_id smallint unsigned NOT NULL,
   num_days smallint unsigned DEFAULT NULL,
@@ -32,21 +39,11 @@ CREATE TABLE martapass (
   FOREIGN KEY (ticket_id) REFERENCES ticket (ticket_id)
 );
 
-CREATE TABLE ticket (
-  customer_id smallint unsigned DEFAULT NULL,
-  ticket_id smallint unsigned NOT NULL,
-  issued date DEFAULT NULL,
-  expiration date DEFAULT NULL,
-  PRIMARY KEY (ticket_id),
-  FOREIGN KEY (customer_id) REFERENCES customer (customer_id)
-);
-
-ALTER TABLE Customer
-RENAME COLUMN password TO userpassword;
-
 CREATE TABLE Station (
 	station_name VARCHAR(20),
     address VARCHAR(60),
+    latitude DOUBLE,
+    longitude DOUBLE,
     PRIMARY KEY(station_name)
 );
 
