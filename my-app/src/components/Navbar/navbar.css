@@ -1,0 +1,57 @@
+  a {
+    text-decoration: none;
+    color: black;
+    font-weight: 600;
+  }
+
+  a:hover {
+    color: #f37521;
+    transition: color 0.5s;
+  }
+
+  #topStrip {
+    /* width: 100vw; */
+    background-color: #f37521;
+    height: 0.8vh;
+    top: 0;
+    position: sticky;
+    position: -webkit-sticky; /* Safari */
+    z-index: 100;
+  }
+
+  .navigation {
+    display: flex;
+    flex-direction: row;
+    padding: 1vw 0vw;
+    top: 0;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    transition: background-color 1s;
+    border-bottom: solid #b95512;
+    z-index: 99;
+  }
+
+  .pageTitle {
+    width: 25%;
+    font-size: 1.5vw;
+    padding: 0 3vw;
+  }
+
+  ul {
+    width: 75%;
+    text-decoration: none;
+    list-style-type: none;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    padding: 0;
+    margin: 0;
+  }
+
+  li {
+    padding: 0vw 3vw;
+    color: black;
+    font-size: 2vw;
+    font-weight: 500;
+  }
