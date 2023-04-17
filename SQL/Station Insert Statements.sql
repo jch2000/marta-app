@@ -1,0 +1,15 @@
+INSERT INTO Station(station_name, address) VALUES("H.E. Holmes", "70 Hamilton E Holmes Dr NW, Atlanta, GA 30311");
+INSERT INTO Station(station_name, address) VALUES("West Lake", "80 Anderson Ave SW, Atlanta, GA 30314");
+INSERT INTO Station(station_name, address) VALUES("Ashby", "65 Joseph E Lowery Blvd, Atlanta, GA 30314");
+INSERT INTO Station(station_name, address) VALUES("Vine City", "502 Rhodes St NW, Atlanta, GA 30314");
+INSERT INTO Station(station_name, address) VALUES("GWCC/CNN Center", "100 Centennial Olympic Park Dr NW, Atlanta, GA 30303");
+INSERT INTO Station(station_name, address) VALUES("Five Points", "30 Alabama St SW, Atlanta, GA 30303");
+INSERT INTO Station(station_name, address) VALUES("Georgia State", "170 Piedmont Ave SE, Atlanta, GA 30303");
+INSERT INTO Station(station_name, address) VALUES("King Memorial", "377 Decatur St SE, Atlanta, GA 30312");
+INSERT INTO Station(station_name, address) VALUES("Inman Park", "1055 DeKalb Ave NE, Atlanta, GA 30307");
+INSERT INTO Station(station_name, address) VALUES("Edgewood", "1475 DeKalb Ave NE, Atlanta, GA 30307");
+INSERT INTO Station(station_name, address) VALUES("East Lake", "2260 College Avenue, Atlanta, GA 30307");
+INSERT INTO Station(station_name, address) VALUES("Decatur", "400 Church St, Decatur, GA 30030");
+INSERT INTO Station(station_name, address) VALUES("Avondale", "915 E Ponce de Leon Ave, Decatur, GA 30030");
+INSERT INTO Station(station_name, address) VALUES("Kensington", "3350 Kensington Rd, Decatur, GA 30032");
+INSERT INTO Station(station_name, address) VALUES("Indian Creek", "3901 Durham Park Rd, Stone Mountain, GA 30083");
