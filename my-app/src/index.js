@@ -9,7 +9,8 @@ import Login from './components/login/login';
 import Home from './components/homepage/home';
 import PlanTrip from './components/planTrip/planTrip';
 import Schedule from './components/schedule/schedule';
-
+import Profile from './components/profile/profile';
+import EditProfile from './components/profile/editprofile';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
@@ -23,6 +24,8 @@ root.render(
       <Route path='/Login' element ={<Login />}/>
       <Route path='/planTrip' element ={<PlanTrip />}/>
       <Route path='/schedule' element ={<Schedule />}/>
+      <Route path='/profile' element ={<Profile />}/>
+      <Route path = '/editProfile' element={<EditProfile/>}/>
     </Routes>
     </BrowserRouter>
   </React.StrictMode>

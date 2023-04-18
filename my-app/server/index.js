@@ -70,6 +70,56 @@ app.post("/login", (req, res) => {
     )
   });
 
+  app.get("/profile", (req, res) => {
+    const email = req.query.email;
+    const password = req.query.password;
+    db.query(
+      "SELECT first_name, last_name, email, phone, userpassword FROM customer WHERE email = ? AND userpassword = ?",
+      [email, password],
+      (error, result) => {
+        if (result.length === 0) {
+          console.log(`User with email: ${email} and password: ${password} not found`);
+          console.log(result[0]);
+        } else {
+          console.log("Displaying user info");
+          console.log(result[0]);
+          res.send({ user: result[0] }); // send the user info to the client
+        }
+      }
+    );
+  });
+  
+
+  app.put("/update" , (req, res) => {
+    const first_name = req.body.first_name;
+    const last_name = req.body.last_name; 
+    const email = req.body.email;
+    const phone = req.body.phone;
+    const password = req.body.password;
+    
+    db.query("UPDATE customer SET first_name = ?, last_name = ?, email = ?, phone = ?, userpassword = ?", 
+    [first_name, last_name, email, phone, password],
+    (err, result) => {
+      if(err) {
+        console.log(err); 
+      }else{
+        console.log("Update Sucessful!", result)
+      }
+    });
+  });
+
+  app.delete("/delete/:email", (req, res) => {
+    const email = req.body.email;
+
+    db.query("DELETE FROM customers WHERE email = ?", email, (err, result) =>{
+      if(err) {
+        console.log(err);
+      } else{
+        res.send(result);
+      }
+    });
+  });
+
   app.post("/nearestStation", (req, res) => {
     const userLat = req.body.userLat;
     const userLng = req.body.userLng;
@@ -134,3 +184,4 @@ app.post("/login", (req, res) => {
 
     
   });
+
