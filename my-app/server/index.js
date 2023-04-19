@@ -152,10 +152,10 @@ app.post("/login", (req, res) => {
             if (error) {
               console.log(error)
               console.log(`Combination ${stationInput}, ${lineInput}, ${dirInput} is invalid`);
+            } else if (result.length == 0) {
+              console.log("Please pick a station");
             } else {
               query_1_return = result;
-              // position = result["position"];
-              // lineID = result["line_id"];
               resolve();
               console.log(result);
             }
@@ -177,6 +177,7 @@ app.post("/login", (req, res) => {
           } else {
             console.log(`Here are the train time for ${stationInput} station on the ${dirInput} ${lineInput} line:`);
             console.log(result);
+            return res.json({'pos': position, 'res': JSON.parse(JSON.stringify(result))});
           }
         }
       )

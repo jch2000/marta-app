@@ -24,7 +24,7 @@
  
  select {
     width: 15vw;
-    height: 1vw;
+    /* height: 1.5vw; */
     padding: 1vw;
     font-size: 1.3vw;
     color: black;
@@ -35,8 +35,8 @@
  }
 
  .submit {
-    padding: 0.55vw;
-    font-size: 1vw;
+    padding: 1.28vw;
+    font-size: 1.3vw;
     background-color: #f37521;
     border-radius: 5px;
     margin-left: 1vw;
@@ -44,3 +44,83 @@
     border-bottom-right-radius: 5px; */
  }
  
+.returnSchedule {
+  display: flex;
+  flex-direction: column;
+}
+
+
+.loader {
+  border: 16px solid #edcfbb;
+  border-radius: 50%;
+  border-top: 16px solid #f37521;
+  text-align: center;
+  width: 5vw;
+  height: 5vw;
+  /* -webkit-animation: spin 2s linear infinite;  */
+  /* Safari */
+  animation: spin 2s linear infinite;
+}
+
+/* Safari */
+/* @-webkit-keyframes spin {
+  0% { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
+} */
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+ /* basic table styling */
+
+table {
+  margin: 0.8vw 1vw;
+  /* display: flex; */
+  width: auto;
+  flex-direction: column;
+  border: 1.2px solid #f37521;
+  border-radius: 6px;
+  border-collapse: collapse;
+}
+
+/* table header */
+table th {
+  font-size: 1.5vw;
+  /* line-height: 28px; */
+  padding: 0.8vw 1vw;
+  color: white;
+  font-weight: 600;
+  background-color: #f37521;
+  border-bottom: 1px solid #f37521;
+  border-right: 1px solid #f37521;
+}
+
+table th:nth-child(n + 1) {
+  color: #f37521;
+  background-color: white;
+}
+
+/* table tr {
+  background-color: white;
+} */
+
+/* change background color for every other row
+table tr:nth-child(4n + 1) {
+  background-color: #f2ab7b;
+} */
+
+/* table cell */
+table td {
+  display: flex;
+  flex-direction: column;
+  font-size: 1.2vw;
+  text-align: center;
+  padding: 0.8vw 1vw;
+}
+
+/* after two columns, add border */
+table td:nth-child(n+1) {
+  border-bottom: 1px solid #f37521;
+}
