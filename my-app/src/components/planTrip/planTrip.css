@@ -1,0 +1,8 @@
+#planTrip select, h1, form, #nearestStation {
+    text-align: center;
+}
+
+#planTrip label {
+    display: block;
+    text-align: center;
+}

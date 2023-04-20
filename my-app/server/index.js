@@ -133,6 +133,47 @@ app.post("/login", (req, res) => {
     })
   });
 
+  app.post("/possibleRoutes", (req, res) => {
+    const start = req.body.start;
+    const destination = req.body.destination;
+    const time = req.body.time;
+
+    /*Get possible routes*/
+    db.query("SELECT * FROM Route WHERE ? in (st_1, st_2, st_3, st_4, st_5, st_6, st_7, st_8, st_9, st_10, st_11, st_12, st_13, st_14, st_15) AND ? IN (st_1, st_2, st_3, st_4, st_5, st_6, st_7, st_8, st_9, st_10, st_11, st_12, st_13, st_14, st_15);", [start, destination], (error, result) => {
+      if (error) {
+        res.send({error: error});
+        return;
+      }
+
+      res.send(result);
+      /*Case where 1*/
+      /*db.query("SELECT * FROM TrainSchedule WHERE TrainSchedule.line_id = ? AND TrainSchedule.? >= '11:00:00' ORDER BY ? LIMIT 1;", [rInfo.valid_line_ids[0], rInfo.end_indices[0][0], time, rInfo.end_indices[0][0]], (error, result2) => {
+        if (error) {
+          res.send({error: error});
+          return;
+        }
+
+
+    });*/
+  });
+});
+
+app.post("/fastestRoute", (req, res) => {
+  const start = req.body.start;
+  const destination = req.body.destination;
+  const time = req.body.time;
+  const rInfo = req.body.rInfo;
+  const index = req.body.index;
+
+  db.query(`SELECT TrainSchedule.line_id, Line.color, Line.direction, ${rInfo.stationIndices.toString()} FROM TrainSchedule INNER JOIN Line ON TrainSchedule.line_id = Line.id WHERE TrainSchedule.line_id = ? AND TrainSchedule.${rInfo.stationIndices[index][0]} >= ? ORDER BY TrainSchedule.${rInfo.stationIndices[index][0]} LIMIT 1;`, [rInfo.lineIds[index], time], (error, result) => {
+    if (error) {
+      res.send({error: error});
+      return;
+    }
+    res.send(result);
+  });
+});
+
   app.post("/schedule", (req, res) => {
     const stationInput = req.body.stationInput;
     const lineInput = req.body.lineInput;
