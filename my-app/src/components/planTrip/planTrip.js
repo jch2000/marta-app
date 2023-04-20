@@ -3,30 +3,6 @@ import Navbar from '../Navbar/navbar';
 import { useState} from 'react';
 import Axios from 'axios';
 
-
-function FindNearestStation() {    
-    const successCallback = (position) => {
-        let userLat = position.coords.latitude;
-        let userLng = position.coords.longitude;
-
-        const handleSubmit = async () => {
-            await Axios.post("/nearestStation", {
-                userLat: userLat, 
-                userLng: userLng,
-            }).then ((response)=> {
-                const ele = document.getElementById('nearestStation');
-                ele.innerText = `Your nearest MARTA station is ${response.data[0].station_name} which is ${parseFloat(response.data[0].distance).toFixed(2)} miles away!`;
-            });
-        }
-        handleSubmit();
-    }
-    const errorCallback = (error) => {
-        console.log(error);
-    }
-    
-    navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
-}
-
 function fastestRoute(rInfo, start, destination, time) {
     let index = 0;
     let res = [];
@@ -53,6 +29,28 @@ function fastestRoute(rInfo, start, destination, time) {
     }
 }
 
+function FindNearestStation() {    
+    const successCallback = (position) => {
+        let userLat = position.coords.latitude;
+        let userLng = position.coords.longitude;
+
+        const handleSubmit = async () => {
+            await Axios.post("/nearestStation", {
+                userLat: userLat, 
+                userLng: userLng,
+            }).then ((response)=> {
+                const ele = document.getElementById('nearestStation');
+                ele.innerText = `Your nearest MARTA station is ${response.data[0].station_name} which is ${parseFloat(response.data[0].distance).toFixed(2)} miles away!`;
+            });
+        }
+        handleSubmit();
+    }
+    const errorCallback = (error) => {
+        console.log(error);
+    }
+    
+    navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
+}
 
 function PlanTrip() {
     const [start, setStartInput] = useState("");
