@@ -70,55 +70,42 @@ app.post("/login", (req, res) => {
     )
   });
 
-  app.get("/profile", (req, res) => {
+  app.get('/profile', (req, res) => {
     const email = req.query.email;
-    const password = req.query.password;
-    db.query(
-      "SELECT first_name, last_name, email, phone, userpassword FROM customer WHERE email = ? AND userpassword = ?",
-      [email, password],
-      (error, result) => {
-        if (result.length === 0) {
-          console.log(`User with email: ${email} and password: ${password} not found`);
-          console.log(result[0]);
-        } else {
-          console.log("Displaying user info");
-          console.log(result[0]);
-          res.send({ user: result[0] }); // send the user info to the client
-        }
-      }
-    );
+    db.query(`SELECT * FROM customer WHERE email = ?`, [email], 
+    (err, result) => {
+      if (err) throw err;
+      res.send(result);
+    });
   });
   
 
-  app.put("/update" , (req, res) => {
-    const first_name = req.body.first_name;
-    const last_name = req.body.last_name; 
-    const email = req.body.email;
-    const phone = req.body.phone;
-    const password = req.body.password;
-    
-    db.query("UPDATE customer SET first_name = ?, last_name = ?, email = ?, phone = ?, userpassword = ?", 
-    [first_name, last_name, email, phone, password],
-    (err, result) => {
-      if(err) {
-        console.log(err); 
-      }else{
-        console.log("Update Sucessful!", result)
-      }
+  app.put('/update', (req, res) => {
+    const { first_name, last_name, phone, email} = req.body;
+    const sql = `UPDATE customer SET first_name = ?, last_name = ?, email = ?, phone = ? WHERE email = ? `;
+    db.query(sql, [first_name, last_name, email, phone, email], (err, result) => {
+      if (err) throw err;
+      res.send(result);
     });
   });
 
-  app.delete("/delete/:email", (req, res) => {
-    const email = req.body.email;
 
-    db.query("DELETE FROM customers WHERE email = ?", email, (err, result) =>{
-      if(err) {
+  app.delete('/delete', (req, res) => {
+    const email = req.body.email;
+    
+    // Escape email to prevent SQL injection
+    const escapedEmail = db.escape(email);
+  
+    db.query("DELETE FROM customers WHERE email = " + escapedEmail, (err, result) => {
+      if (err) {
         console.log(err);
-      } else{
+        res.status(500).send("Error deleting customer");
+      } else {
         res.send(result);
       }
     });
   });
+
 
   app.post("/nearestStation", (req, res) => {
     const userLat = req.body.userLat;
@@ -178,6 +165,8 @@ app.post("/fastestRoute", (req, res) => {
     const stationInput = req.body.stationInput;
     const lineInput = req.body.lineInput;
     const dirInput = req.body.dirInput;
+    const routeLength = {"blue": 15, "green": 9, "red" : 19, "gold" : 18};
+    let stations = "";
     let query_1_return;
     let position = 'x';
     let lineID = 0;
@@ -185,42 +174,90 @@ app.post("/fastestRoute", (req, res) => {
     console.log(`user's input station: ${stationInput}, line: ${lineInput}, dir: ${dirInput}`);
 
     const queryFunc = () =>{
-      return new Promise((resolve, reject)=>{
-        db.query(
-          "SELECT position, line_id FROM StationHasRoute WHERE station_name = ? AND line_id = (SELECT id FROM Line WHERE color = ? AND direction = ?)",
-          [stationInput,lineInput, dirInput], 
-          (error, result) => {
-            if (error) {
-              console.log(error)
-              console.log(`Combination ${stationInput}, ${lineInput}, ${dirInput} is invalid`);
-            } else {
-              query_1_return = result;
-              // position = result["position"];
-              // lineID = result["line_id"];
-              resolve();
-              console.log(result);
+      if(stationInput) {
+        return new Promise((resolve, reject)=>{
+          db.query(
+            "SELECT position, line_id FROM StationHasRoute WHERE station_name = ? AND line_id = (SELECT id FROM Line WHERE color = ? AND direction = ?)",
+            [stationInput,lineInput, dirInput], 
+            (error, result) => {
+              if (error) {
+                console.log(error)
+                console.log(`Combination ${stationInput}, ${lineInput}, ${dirInput} is invalid`);
+              } else if (result.length == 0) {
+                console.log("Please pick a station");
+              } else {
+                query_1_return = result;
+                resolve();
+                console.log(result);
+              }
+            });
+        });
+      }
+      else {
+        return new Promise((resolve, reject)=>{
+          for (let index = 0; index < routeLength[lineInput]; index++) {
+            stations = stations + " st_"+(index+1).toString();
+            if (!(index+1 == routeLength[lineInput])) {
+              stations += ",";
             }
-          });
-      });
+          } 
+          console.log(typeof stationInput, lineInput, dirInput, stations)
+          let query_1 = "SELECT" + stations + " FROM TrainSchedule WHERE line_id = (SELECT id FROM Line WHERE color = '" + lineInput + "' AND direction = '" + dirInput + "')";
+          db.query(
+            query_1,
+            (error, result) => {
+              if (error) {
+                console.log(error)
+                console.log(`Combination ${stations}, ${lineInput}, ${dirInput} is invalid`);
+              } else if (result.length == 0) {
+                console.log("Please pick a line");
+                alert("Invalid Line and Direction combination");
+              } else {
+                console.log("yay");
+                query_1_return = result;
+                resolve();
+                console.log(result);
+              }
+            });
+        });
+      }
     };
     
     queryFunc().then((val)=>{
-      position = query_1_return[0]["position"];
-      lineID = query_1_return[0]["line_id"];
-      console.log(position, lineID);
+      if(stationInput) {
+        position = query_1_return[0]["position"];
+        lineID = query_1_return[0]["line_id"];
+        console.log(position, lineID);
 
-      let query_2 = "SELECT StationHasRoute.station_name, TrainSchedule." + position + " FROM TrainSchedule INNER JOIN StationHasRoute ON StationHasRoute.line_id = TrainSchedule.line_id WHERE station_name = '" + stationInput + "' AND StationHasRoute.line_id = " + lineID;
-      db.query(
-        query_2,
-        (error, result) => {
-          if (error) {
-            console.log(error);
-          } else {
-            console.log(`Here are the train time for ${stationInput} station on the ${dirInput} ${lineInput} line:`);
-            console.log(result);
+        let query_2 = "SELECT StationHasRoute.station_name, TrainSchedule." + position + " FROM TrainSchedule INNER JOIN StationHasRoute ON StationHasRoute.line_id = TrainSchedule.line_id WHERE station_name = '" + stationInput + "' AND StationHasRoute.line_id = " + lineID;
+        db.query(
+          query_2,
+          (error, result) => {
+            if (error) {
+              console.log(error);
+            } else {
+              console.log(`Here are the train time for ${stationInput} station on the ${dirInput} ${lineInput} line:`);
+              console.log(result);
+              return res.json({'pos': position, 'res': JSON.parse(JSON.stringify(result))});
+            }
           }
-        }
-      )
+        )
+      } else {
+        console.log(query_1_return);
+        let query_2 = "SELECT" + stations + " FROM Route WHERE line_id = (SELECT id FROM Line WHERE color = '" + lineInput + "' AND direction = '" + dirInput + "')";
+        db.query(
+          query_2,
+          (error, result) => {
+            if (error) {
+              console.log(error);
+            } else {
+              console.log(`Here are the train times on the ${dirInput} ${lineInput} line:`);
+              console.log(result);
+              return res.json({'st': stations, 'q2': result, 'q1': JSON.parse(JSON.stringify(query_1_return))});
+            }
+          }
+        )
+      }
     });
 
     
