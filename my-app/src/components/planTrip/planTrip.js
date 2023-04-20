@@ -3,6 +3,68 @@ import Navbar from '../Navbar/navbar';
 import { useState} from 'react';
 import Axios from 'axios';
 
+function routeInfo(response, start, destination) {
+    let lineIds = [];
+    let stationIndices = [];
+    let stationNames = [];
+    const tupleLen = (Object.values(response.data[0])).length;
+
+    for (let i = 0; i < response.data.length; i++) {
+        let data = Object.values(response.data[i])
+        let indices = [];
+        let names = [];
+        let startSeen = false;
+
+        for (let j = 1; j < tupleLen; j++) {
+            let currStation = data[j];
+
+            if (currStation == start) {
+                startSeen = true;
+            }
+
+            if (startSeen == true) {
+                indices.push(''.concat('st_', j));
+                names.push(currStation);
+            }
+
+            if (currStation == destination) {
+                if (startSeen == false)
+                    break;
+                else {
+                    stationIndices.push(indices);
+                    stationNames = names;
+                    lineIds.push(data[0]);
+                    break;
+                }
+            }
+        }
+    }
+    return {lineIds, stationIndices, stationNames};
+}
+
+function FindNearestStation() {    
+    const successCallback = (position) => {
+        let userLat = position.coords.latitude;
+        let userLng = position.coords.longitude;
+
+        const handleSubmit = async () => {
+            await Axios.post("/nearestStation", {
+                userLat: userLat, 
+                userLng: userLng,
+            }).then ((response)=> {
+                const ele = document.getElementById('nearestStation');
+                ele.innerText = `Your nearest MARTA station is ${response.data[0].station_name} which is ${parseFloat(response.data[0].distance).toFixed(2)} miles away!`;
+            });
+        }
+        handleSubmit();
+    }
+    const errorCallback = (error) => {
+        console.log(error);
+    }
+    
+    navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
+}
+
 function fastestRoute(rInfo, start, destination, time) {
     let index = 0;
     let res = [];
@@ -29,72 +91,11 @@ function fastestRoute(rInfo, start, destination, time) {
     }
 }
 
-function FindNearestStation() {    
-    const successCallback = (position) => {
-        let userLat = position.coords.latitude;
-        let userLng = position.coords.longitude;
-
-        const handleSubmit = async () => {
-            await Axios.post("/nearestStation", {
-                userLat: userLat, 
-                userLng: userLng,
-            }).then ((response)=> {
-                const ele = document.getElementById('nearestStation');
-                ele.innerText = `Your nearest MARTA station is ${response.data[0].station_name} which is ${parseFloat(response.data[0].distance).toFixed(2)} miles away!`;
-            });
-        }
-        handleSubmit();
-    }
-    const errorCallback = (error) => {
-        console.log(error);
-    }
-    
-    navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
-}
 
 function PlanTrip() {
     const [start, setStartInput] = useState("");
     const [destination, setDestinationInput] = useState("");
     const [time, setTimeInput] = useState("");
-
-    function routeInfo(response, start, destination) {
-        let lineIds = [];
-        let stationIndices = [];
-        let stationNames = [];
-        const tupleLen = (Object.values(response.data[0])).length;
-  
-        for (let i = 0; i < response.data.length; i++) {
-            let data = Object.values(response.data[i])
-            let indices = [];
-            let names = [];
-            let startSeen = false;
-  
-            for (let j = 1; j < tupleLen; j++) {
-                let currStation = data[j];
-  
-                if (currStation == start) {
-                    startSeen = true;
-                }
-
-                if (startSeen == true) {
-                    indices.push(''.concat('st_', j));
-                    names.push(currStation);
-                }
-
-                if (currStation == destination) {
-                    if (startSeen == false)
-                        break;
-                    else {
-                        stationIndices.push(indices);
-                        stationNames = names;
-                        lineIds.push(data[0]);
-                        break;
-                    }
-                }
-            }
-        }
-        return {lineIds, stationIndices, stationNames};
-    }
 
     const handleSubmit = async (e) => {
         e.preventDefault();
