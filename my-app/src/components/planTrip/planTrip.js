@@ -112,103 +112,115 @@ function PlanTrip() {
     }
 
     return (
-        <div id="planTrip">
+        <div className='planTrip' id="planTrip">
             <Navbar/>
             <FindNearestStation/>
-            <h1>Plan a Trip</h1>
-            <div id='nearestStation'></div>
-            <form>
-                <label for="startStation">Start Station</label>
-                <select id="stations" name="stations" required onClick={(e) => {
-                                setStartInput(e.target.value)}}>
-                    <option value="Airport">Airport</option>
-                    <option value="Arts Center">Arts Center</option>
-                    <option value="Ashby">Ashby</option>
-                    <option value="Avondale">Avondale</option>
-                    <option value="Bankhead">Bankhead</option>
-                    <option value="Brookhaven">Brookhaven</option>
-                    <option value="Buckhead">Buckhead</option>
-                    <option value="Candler Park">Candler Park</option>
-                    <option value="Chamblee">Chamblee</option>
-                    <option value="Civic Center">Civic Center</option>
-                    <option value="College Park">College Park</option>
-                    <option value="Decatur">Decatur</option>
-                    <option value="Doraville">Doraville</option>
-                    <option value="Dunwoody">Dunwoody</option>
-                    <option value="East Lake">East Lake</option>
-                    <option value="East Point">East Point</option>
-                    <option value="Five Points">Five Points</option>
-                    <option value="Garnett">Garnett</option>
-                    <option value="Georgia State">Georgia State</option>
-                    <option value="GWCC/Mercedes-Benz Stadium">GWCC/Mercedes-Benz Stadium</option>
-                    <option value="H.E. Holmes">H.E. Holmes</option>
-                    <option value="Indian Creek">Indian Creek</option>
-                    <option value="Inman Park/Reynoldstown">Inman Park/Reynoldstown</option>
-                    <option value="Kensington">Kensington</option>
-                    <option value="King Memorial">King Memorial</option>
-                    <option value="Lakewood">Lakewood</option>
-                    <option value="Lenox">Lenox</option>
-                    <option value="Lindbergh Center">Lindbergh Center</option>
-                    <option value="Medical Center">Medical Center</option>
-                    <option value="Midtown">Midtown</option>
-                    <option value="North Avenue">North Avenue</option>
-                    <option value="North Springs">North Springs</option>
-                    <option value="Oakland City">Oakland City</option>
-                    <option value="Peachtree Center">Peachtree Center</option>
-                    <option value="Sandy Springs">Sandy Springs</option>
-                    <option value="Vine City">Vine City</option>
-                    <option value="West End">West End</option>
-                    <option value="West Lake">West Lake</option>
-                </select>
-                <label for="endStation">End Station</label>
-                <select id="stations" name="stations" required onClick={(e) => {
-                                setDestinationInput(e.target.value)}}>
-                    <option value="Airport">Airport</option>
-                    <option value="Arts Center">Arts Center</option>
-                    <option value="Ashby">Ashby</option>
-                    <option value="Avondale">Avondale</option>
-                    <option value="Bankhead">Bankhead</option>
-                    <option value="Brookhaven">Brookhaven</option>
-                    <option value="Buckhead">Buckhead</option>
-                    <option value="Candler Park">Candler Park</option>
-                    <option value="Chamblee">Chamblee</option>
-                    <option value="Civic Center">Civic Center</option>
-                    <option value="College Park">College Park</option>
-                    <option value="Decatur">Decatur</option>
-                    <option value="Doraville">Doraville</option>
-                    <option value="Dunwoody">Dunwoody</option>
-                    <option value="East Lake">East Lake</option>
-                    <option value="East Point">East Point</option>
-                    <option value="Five Points">Five Points</option>
-                    <option value="Garnett">Garnett</option>
-                    <option value="Georgia State">Georgia State</option>
-                    <option value="GWCC/Mercedes-Benz Stadium">GWCC/Mercedes-Benz Stadium</option>
-                    <option value="H.E. Holmes">H.E. Holmes</option>
-                    <option value="Indian Creek">Indian Creek</option>
-                    <option value="Inman Park/Reynoldstown">Inman Park/Reynoldstown</option>
-                    <option value="Kensington">Kensington</option>
-                    <option value="King Memorial">King Memorial</option>
-                    <option value="Lakewood">Lakewood</option>
-                    <option value="Lenox">Lenox</option>
-                    <option value="Lindbergh Center">Lindbergh Center</option>
-                    <option value="Medical Center">Medical Center</option>
-                    <option value="Midtown">Midtown</option>
-                    <option value="North Avenue">North Avenue</option>
-                    <option value="North Springs">North Springs</option>
-                    <option value="Oakland City">Oakland City</option>
-                    <option value="Peachtree Center">Peachtree Center</option>
-                    <option value="Sandy Springs">Sandy Springs</option>
-                    <option value="Vine City">Vine City</option>
-                    <option value="West End">West End</option>
-                    <option value="West Lake">West Lake</option>
-                </select>
-                <label for="time">Time (hh:mm:ss)</label>
-                <input id='time' type="text" required onChange={(e) => { 
-                    setTimeInput(e.target.value);}}/>
-                <br></br>
-                <button className="submit" type="submit" onClick={handleSubmit}>Search</button>
-            </form>
-            <div id='route'></div>
+            <div className='planTripBody'>
+                <h1>Plan a Trip</h1>
+                <div id='nearestStation'></div>
+                <form>
+                    <div className='labelInput'> 
+                    <label for="startStation">Start Station</label>
+
+                    <select id="stations" name="stations" required onClick={(e) => {
+                                    setStartInput(e.target.value)}}>
+                        <option value="Airport">Airport</option>
+                        <option value="Arts Center">Arts Center</option>
+                        <option value="Ashby">Ashby</option>
+                        <option value="Avondale">Avondale</option>
+                        <option value="Bankhead">Bankhead</option>
+                        <option value="Brookhaven">Brookhaven</option>
+                        <option value="Buckhead">Buckhead</option>
+                        <option value="Candler Park">Candler Park</option>
+                        <option value="Chamblee">Chamblee</option>
+                        <option value="Civic Center">Civic Center</option>
+                        <option value="College Park">College Park</option>
+                        <option value="Decatur">Decatur</option>
+                        <option value="Doraville">Doraville</option>
+                        <option value="Dunwoody">Dunwoody</option>
+                        <option value="East Lake">East Lake</option>
+                        <option value="East Point">East Point</option>
+                        <option value="Five Points">Five Points</option>
+                        <option value="Garnett">Garnett</option>
+                        <option value="Georgia State">Georgia State</option>
+                        <option value="GWCC/Mercedes-Benz Stadium">GWCC/Mercedes-Benz Stadium</option>
+                        <option value="H.E. Holmes">H.E. Holmes</option>
+                        <option value="Indian Creek">Indian Creek</option>
+                        <option value="Inman Park/Reynoldstown">Inman Park/Reynoldstown</option>
+                        <option value="Kensington">Kensington</option>
+                        <option value="King Memorial">King Memorial</option>
+                        <option value="Lakewood">Lakewood</option>
+                        <option value="Lenox">Lenox</option>
+                        <option value="Lindbergh Center">Lindbergh Center</option>
+                        <option value="Medical Center">Medical Center</option>
+                        <option value="Midtown">Midtown</option>
+                        <option value="North Avenue">North Avenue</option>
+                        <option value="North Springs">North Springs</option>
+                        <option value="Oakland City">Oakland City</option>
+                        <option value="Peachtree Center">Peachtree Center</option>
+                        <option value="Sandy Springs">Sandy Springs</option>
+                        <option value="Vine City">Vine City</option>
+                        <option value="West End">West End</option>
+                        <option value="West Lake">West Lake</option>
+                    </select>
+                    </div>
+                    <div className='labelInput'>
+                    <label for="endStation">End Station</label>
+                    <select id="stations" name="stations" required onClick={(e) => {
+                                    setDestinationInput(e.target.value)}}>
+                        <option value="Airport">Airport</option>
+                        <option value="Arts Center">Arts Center</option>
+                        <option value="Ashby">Ashby</option>
+                        <option value="Avondale">Avondale</option>
+                        <option value="Bankhead">Bankhead</option>
+                        <option value="Brookhaven">Brookhaven</option>
+                        <option value="Buckhead">Buckhead</option>
+                        <option value="Candler Park">Candler Park</option>
+                        <option value="Chamblee">Chamblee</option>
+                        <option value="Civic Center">Civic Center</option>
+                        <option value="College Park">College Park</option>
+                        <option value="Decatur">Decatur</option>
+                        <option value="Doraville">Doraville</option>
+                        <option value="Dunwoody">Dunwoody</option>
+                        <option value="East Lake">East Lake</option>
+                        <option value="East Point">East Point</option>
+                        <option value="Five Points">Five Points</option>
+                        <option value="Garnett">Garnett</option>
+                        <option value="Georgia State">Georgia State</option>
+                        <option value="GWCC/Mercedes-Benz Stadium">GWCC/Mercedes-Benz Stadium</option>
+                        <option value="H.E. Holmes">H.E. Holmes</option>
+                        <option value="Indian Creek">Indian Creek</option>
+                        <option value="Inman Park/Reynoldstown">Inman Park/Reynoldstown</option>
+                        <option value="Kensington">Kensington</option>
+                        <option value="King Memorial">King Memorial</option>
+                        <option value="Lakewood">Lakewood</option>
+                        <option value="Lenox">Lenox</option>
+                        <option value="Lindbergh Center">Lindbergh Center</option>
+                        <option value="Medical Center">Medical Center</option>
+                        <option value="Midtown">Midtown</option>
+                        <option value="North Avenue">North Avenue</option>
+                        <option value="North Springs">North Springs</option>
+                        <option value="Oakland City">Oakland City</option>
+                        <option value="Peachtree Center">Peachtree Center</option>
+                        <option value="Sandy Springs">Sandy Springs</option>
+                        <option value="Vine City">Vine City</option>
+                        <option value="West End">West End</option>
+                        <option value="West Lake">West Lake</option>
+                    </select>  
+                    </div>
+                    
+                    <div className='labelInput'>
+                    <label for="time">Time (hh:mm:ss)</label>
+                    <input id='time' type="text" required onChange={(e) => { 
+                        setTimeInput(e.target.value);}}/> 
+                    </div>
+                    
+                    <button className="submit" type="submit" onClick={handleSubmit}>Search</button>
+                </form>
+                <div id='route'></div>
+
+            </div>
+            
         </div>
     );
 }

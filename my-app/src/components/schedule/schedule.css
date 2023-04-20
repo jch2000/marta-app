@@ -24,12 +24,12 @@
    justify-content: center;
  }
  
- label {
+ .Schedule label {
    margin-right: 0.5vw;
    font-size: 1.5vw;
  }
  
- select {
+ .Schedule select {
     width: 15vw;
     /* height: 1.5vw; */
     padding: 1vw;
@@ -41,7 +41,7 @@
     border-bottom-left-radius: 5px; */
  }
 
- .submit {
+ .Schedule .submit {
     padding: 1.28vw;
     font-size: 1.3vw;
     background-color: #f37521;

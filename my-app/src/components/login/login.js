@@ -44,27 +44,36 @@ function Login() {
   return (
     <>
       <Navbar />
-      <div className="Login">
+      <div className='loginBody'>
+      <h1>Login</h1>
+      <div className="login">
         <div className="auth-form-container">
-          <h1>Login</h1>
+          
           <form>
-            <label htmlFor="email">Email Address</label>
-            <input
-              value={email}
-              type="text"
-              id="email"
-              name="email"
-              placeholder="youremail@gmail.com"
-              onChange={handleEmailChange}
-            />
-            <label htmlFor="password">Password</label>
-            <input
-              type="password"
-              placeholder="********"
-              id="password"
-              name="password"
-              onChange={handlePasswordChange}
-            />
+            <div className='labelInput'>
+              <label htmlFor="email">Email Address</label>
+              <input
+                value={email}
+                type="text"
+                id="email"
+                name="email"
+                placeholder="youremail@gmail.com"
+                onChange={handleEmailChange}
+              />
+            </div>
+
+            <div className='labelInput'>
+              <label htmlFor="password">Password</label>
+              <input
+                type="password"
+                placeholder="********"
+                id="password"
+                name="password"
+                onChange={handlePasswordChange}
+              />
+            </div>
+            
+            
             <button onClick={handleLoginClick}><Link to='/home'></Link>Login</button>
           </form>
 
@@ -76,6 +85,8 @@ function Login() {
           </p>
         </div>
         <h2>{LoginStatus}</h2>
+      </div>
+
       </div>
     </>
   );

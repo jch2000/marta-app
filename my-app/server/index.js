@@ -63,6 +63,8 @@ app.post("/login", (req, res) => {
         else if(result.length != 0) {
           console.log(result);
           console.log(`message:"Login successful" with email: ${email}`) ;
+          localStorage.setItem('email', response.data.email);
+          localStorage.setItem('id', response.data.customer_id);
         } else {
           console.log(`Wrong email/password! with email: ${email}, and password: ${password}`);
         }
@@ -139,8 +141,6 @@ app.post("/login", (req, res) => {
           res.send({error: error});
           return;
         }
-
-
     });*/
   });
 });
@@ -262,4 +262,3 @@ app.post("/fastestRoute", (req, res) => {
 
     
   });
-

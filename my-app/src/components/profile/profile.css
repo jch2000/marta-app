@@ -1,0 +1,80 @@
+.profileBody {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+ }
+  .profile {
+     display: flex;
+     flex-direction: column;
+     justify-content: center;
+     align-items: center;
+     padding: 2vw 5vw;
+     width: max-content;
+     /* margin: 5vw 15vw; */
+     border: solid black;
+     border-radius: 5px;
+  }
+  
+  .auth-form-container {
+     display: flex;
+     flex-direction: column;
+  }
+ 
+  .profile form {
+    display: flex;
+    flex-direction: column;
+  }
+ 
+ .labelInput {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+ }
+ 
+
+  .profile label {
+    font-size: 2vw;
+    display: flex;
+    width: 40%;
+    text-align: left;
+  }
+ 
+  .profile input {
+     margin: 1vw 0;
+     width: 60%;
+     padding: 0.2vw;
+     font-size: 1.5vw;
+     color: black;
+     border: solid #399fc8;
+     border-radius: 5px;
+  }
+ 
+  .deleteConfirm {
+    margin-top: 3vw;
+    display: flex;
+    flex-direction: column;
+ }
+
+ .deleteConfirm label {
+    width: 100%;
+ }
+ .deleteConfirm input {
+    width: 100%;
+ }
+
+ .profile button{
+     border:none; 
+     cursor: pointer; 
+     padding: 1.28vw;
+     font-size: 1.3vw;
+     background-color: #399fc8;
+     color: white;
+     border-radius: 5px;
+  }
+ 
+  .link-btn{
+     background: none;
+     text-decoration: underline;
+     color: rgba(0, 0, 255, 0.482)
+  }

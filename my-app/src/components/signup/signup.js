@@ -32,36 +32,49 @@ function Signup() {
   return (
     <>
       <Navbar/>
-      <div className='Signup'>
-        <div className='"registration"'>
-          <h1>Registration</h1>
+      <div className='signupBody'>
+        <h1>Registration</h1>
+        <div className='signup'>
+          <form>
+          <div className='labelInput'>
           <label>First Name</label>
           <input
             type='text'
             onChange={(e) => {
               setfirstnameeReg(e.target.value)
-            }} /><br />
+            }} />
+            </div>
+            <div className='labelInput'>
           <label>Last Name</label>
           <input type='text'
             onChange={(e) => {
               setlastnameeReg(e.target.value)
-            }} /><br />
+            }} />
+            </div>
+            <div className='labelInput'>
           <label>Email</label>
           <input type='text'
             onChange={(e) => {
               setemailReg(e.target.value)
-            }} /><br />
+            }} />
+
+            </div>
+            <div className='labelInput'>
           <label>Phone</label>
           <input type='text'
             onChange={(e) => {
               setphoneReg(e.target.value)
-            }} /><br />
+            }} /></div>
+          <div className='labelInput'>
           <label>Password</label>
           <input type='password'
             onChange={(e) => {
               setPasswordReg(e.target.value)
-            }} /><br />
+            }} />
+          </div>
+
           <button onClick={handleSubmit}>Register</button>
+          </form>
         </div>
         <p>{signupStatus}</p>
       </div>
