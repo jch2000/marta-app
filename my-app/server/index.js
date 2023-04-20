@@ -70,55 +70,42 @@ app.post("/login", (req, res) => {
     )
   });
 
-  app.get("/profile", (req, res) => {
+  app.get('/profile', (req, res) => {
     const email = req.query.email;
-    const password = req.query.password;
-    db.query(
-      "SELECT first_name, last_name, email, phone, userpassword FROM customer WHERE email = ? AND userpassword = ?",
-      [email, password],
-      (error, result) => {
-        if (result.length === 0) {
-          console.log(`User with email: ${email} and password: ${password} not found`);
-          console.log(result[0]);
-        } else {
-          console.log("Displaying user info");
-          console.log(result[0]);
-          res.send({ user: result[0] }); // send the user info to the client
-        }
-      }
-    );
+    db.query(`SELECT * FROM customer WHERE email = ?`, [email], 
+    (err, result) => {
+      if (err) throw err;
+      res.send(result);
+    });
   });
   
 
-  app.put("/update" , (req, res) => {
-    const first_name = req.body.first_name;
-    const last_name = req.body.last_name; 
-    const email = req.body.email;
-    const phone = req.body.phone;
-    const password = req.body.password;
-    
-    db.query("UPDATE customer SET first_name = ?, last_name = ?, email = ?, phone = ?, userpassword = ?", 
-    [first_name, last_name, email, phone, password],
-    (err, result) => {
-      if(err) {
-        console.log(err); 
-      }else{
-        console.log("Update Sucessful!", result)
-      }
+  app.put('/update', (req, res) => {
+    const { first_name, last_name, phone, email} = req.body;
+    const sql = `UPDATE customer SET first_name = ?, last_name = ?, email = ?, phone = ? WHERE email = ? `;
+    db.query(sql, [first_name, last_name, email, phone, email], (err, result) => {
+      if (err) throw err;
+      res.send(result);
     });
   });
 
-  app.delete("/delete/:email", (req, res) => {
-    const email = req.body.email;
 
-    db.query("DELETE FROM customers WHERE email = ?", email, (err, result) =>{
-      if(err) {
+  app.delete('/delete', (req, res) => {
+    const email = req.body.email;
+    
+    // Escape email to prevent SQL injection
+    const escapedEmail = db.escape(email);
+  
+    db.query("DELETE FROM customers WHERE email = " + escapedEmail, (err, result) => {
+      if (err) {
         console.log(err);
-      } else{
+        res.status(500).send("Error deleting customer");
+      } else {
         res.send(result);
       }
     });
   });
+
 
   app.post("/nearestStation", (req, res) => {
     const userLat = req.body.userLat;
