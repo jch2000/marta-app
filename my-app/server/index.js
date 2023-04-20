@@ -128,7 +128,7 @@ app.post("/login", (req, res) => {
     const time = req.body.time;
 
     /*Get possible routes*/
-    db.query("SELECT * FROM Route WHERE ? in (st_1, st_2, st_3, st_4, st_5, st_6, st_7, st_8, st_9, st_10, st_11, st_12, st_13, st_14, st_15) AND ? IN (st_1, st_2, st_3, st_4, st_5, st_6, st_7, st_8, st_9, st_10, st_11, st_12, st_13, st_14, st_15);", [start, destination], (error, result) => {
+    db.query("SELECT * FROM Route WHERE ? in (st_1, st_2, st_3, st_4, st_5, st_6, st_7, st_8, st_9, st_10, st_11, st_12, st_13, st_14, st_15, st_16, st_17, st_18, st_19) AND ? IN (st_1, st_2, st_3, st_4, st_5, st_6, st_7, st_8, st_9, st_10, st_11, st_12, st_13, st_14, st_15, st_16, st_17, st_18, st_19);", [start, destination], (error, result) => {
       if (error) {
         res.send({error: error});
         return;
