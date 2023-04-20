@@ -1,5 +1,6 @@
-import React, { useState, useEffect, useNavigate } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 import Navbar from "../Navbar/navbar";
 
 function Profile() {
@@ -11,7 +12,8 @@ function Profile() {
   const [updatedCustomer, setUpdatedCustomer] = useState({});
   const [deleteConfirmation, setDeleteConfirmation] = useState('');
 
-  //const navigate = useNavigate();
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const email = localStorage.getItem('email');
@@ -22,8 +24,8 @@ function Profile() {
       setIsLoading(false);
       return;
     }
-
-    axios.get("http://localhost:3001/profile").then((res) => {
+  
+    axios.get(`http://localhost:3001/profile/${customer_id}`).then((res) => {
       const customer = res.data[0];
       if (!isLoading && customer && customer.customer_id === customer_id) {
         setCustomer(customer);
@@ -54,10 +56,10 @@ function Profile() {
     const { first_name, last_name, email, phone } = updatedCustomer;
 
     axios.put("http://localhost:3001/update", {
-      first_name: first_name,
-      last_name: last_name,
-      email: email,
-      phone: phone
+      first_name,
+      last_name,
+      email,
+      phone
     }).then((res) => {
       const customer = res.data[0];
       setCustomer(customer);
@@ -70,14 +72,16 @@ function Profile() {
 
   const handleDeleteClick = () => {
     setDeleteConfirmation('');
-    axios.delete("http://localhost:3001/delete").then(() => {
+    const customer_id = localStorage.getItem('id');
+    axios.delete(`http://localhost:3001/delete/${customer_id}`).then(() => {
       localStorage.removeItem('email');
       localStorage.removeItem('id');
-      window.location.href = '/login';
+      navigate('/login');
     }).catch(() => {
       setErrorMessage('Failed to delete account.');
     });
   };
+
   const handleDeleteConfirmationChange = (event) => {
     setDeleteConfirmation(event.target.value);
   };

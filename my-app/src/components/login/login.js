@@ -22,29 +22,23 @@ function Login() {
     setPassword(event.target.value);
   };
 
-  const handleLoginClick = async () => {
+  const handleLoginClick = () => {
     setIsLoading(true);
-    try {
-      const response = await Axios.post('/login', {
-        email: email, 
-        password: password,
-      });
-      const customer = Array.isArray(response.data) && response.data.length ? response.data[0] : null;
-      if (customer && customer.password === password){
-        localStorage.setItem('email', email);
-        localStorage.setItem('id', customer.customer_id)
-        setIsLoading(false);
-        navigate('/home');
-      } else if (response.data.message) {
+    Axios.post("http://localhost:3001/login", {
+      email: email,
+      password: password,
+    }).then((response) => {
+      if (response.data.message) {
         setLoginStatus(response.data.message);
+        setIsLoading(false);
       } else {
-        setLoginStatus('');
+        localStorage.setItem('email', response.data.email);
+        localStorage.setItem('id', response.data.customer_id);
+        navigate('/profile');
       }
-    } catch (error) {
-      setLoginStatus('Something went wrong. Please try again later.');
-    }
+    });
   };
-  
+
 
 
   return (
