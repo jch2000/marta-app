@@ -58,16 +58,19 @@ async function fastestRoute(rInfo, start, destination, time) {
 
     if (rInfo.lineIds.length == 1) {
         await handleSubmit();
-        return Object.values(fastestRoutes[0]);
+        return fastestRoutes[0];
     } else if (rInfo.lineIds.length == 2) {
         await handleSubmit();
         index = 1;
         await handleSubmit();
         console.log(fastestRoutes);
-        let route1 = Object.values(fastestRoutes[0]);
-        let route2 = Object.values(fastestRoutes[1]);
 
-        if (route1[3] < route2[3])
+        let route1 = fastestRoutes[0];
+        let route2 = fastestRoutes[1];
+        let route1Keys = Object.keys(route1);
+        let route2Keys = Object.keys(route2);
+
+        if (route1[route1Keys[3]] < route2[route2Keys[3]])
             return route1;
         return route2;
     }
@@ -90,7 +93,20 @@ function PlanTrip() {
             console.log(rInfo);
 
             fastestRoute(rInfo, start, destination, time).then((fastest) => {
-                console.log(fastest);
+                let fastestKeys = Object.keys(fastest);
+                
+                const ele = document.getElementById('route');
+                let p = document.createElement('p');
+                ele.appendChild(p);
+                ele.innerText = `Get on ${fastest[fastestKeys[1]]} train heading ${fastest[fastestKeys[2]]}`;
+
+                let ul = document.createElement('ul');
+                for(let i = 3; i < fastest.length; i++) {
+                    let li = document.createElement('li');
+                    li.appendChild(document.createTextNode(fastest[fastestKeys[i]]));
+                    ul.appendChild(li);
+                }
+                ele.appendChild(ul);
             });
         });
     }
