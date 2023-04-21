@@ -31,7 +31,6 @@ function NearbyStations() {
     const [miles, setMilesInput] = useState("");
     const [lat, setLatInput] = useState("");
     const [lng, setLngInput] = useState("");
-    console.log(parseFloat(miles), parseFloat(lat), parseFloat(lng));
 
     function getLocation() {
         if (navigator.geolocation) {
