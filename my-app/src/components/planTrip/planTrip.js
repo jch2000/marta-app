@@ -18,7 +18,7 @@ function routeInfo(response, start, destination) {
         for (let j = 1; j < tupleLen; j++) {
             let currStation = data[j];
 
-            if (currStation == start) {
+            if (currStation === start) {
                 startSeen = true;
             }
 
@@ -27,7 +27,7 @@ function routeInfo(response, start, destination) {
                 names.push(currStation);
             }
 
-            if (currStation == destination) {
+            if (currStation === destination) {
                 if (startSeen == false)
                     break;
                 else {
@@ -42,29 +42,34 @@ function routeInfo(response, start, destination) {
     return {lineIds, stationIndices, stationNames};
 }
 
-function fastestRoute(rInfo, start, destination, time) {
+async function fastestRoute(rInfo, start, destination, time) {
     let index = 0;
-    let res = [];
+    let fastestRoutes = [];
     const handleSubmit = async () => {
-        await Axios.post("/fastestRoute", {
+        const response = await Axios.post("/fastestRoute", {
             rInfo: rInfo,
             start: start,
             destination: destination,
             time: time,
             index: index,
-        }).then((response)=> {
-            res.push(response);
         });
+        fastestRoutes.push(response.data[0]);
     }
 
     if (rInfo.lineIds.length == 1) {
-        handleSubmit();
-        console.log(res);
+        await handleSubmit();
+        return Object.values(fastestRoutes[0]);
     } else if (rInfo.lineIds.length == 2) {
-        handleSubmit();
+        await handleSubmit();
         index = 1;
-        handleSubmit();
-        console.log(res);
+        await handleSubmit();
+        console.log(fastestRoutes);
+        let route1 = Object.values(fastestRoutes[0]);
+        let route2 = Object.values(fastestRoutes[1]);
+
+        if (route1[3] < route2[3])
+            return route1;
+        return route2;
     }
 }
 
@@ -82,9 +87,11 @@ function PlanTrip() {
             time: time,
         }).then((response)=> {
             let rInfo = routeInfo(response, start, destination);
-            console.log('rInfo: ', rInfo);
+            console.log(rInfo);
 
-            fastestRoute(rInfo, start, destination, time);
+            fastestRoute(rInfo, start, destination, time).then((fastest) => {
+                console.log(fastest);
+            });
         });
     }
 
@@ -93,7 +100,6 @@ function PlanTrip() {
             <Navbar/>
             <div className='planTripBody'>
                 <h1>Plan a Trip</h1>
-                <div id='nearestStation'></div>
                 <form>
                     <div className='labelInput'> 
                     <label for="startStation">Start Station</label>
