@@ -8,6 +8,7 @@ import Signup from './components/signup/signup';
 import Login from './components/login/login';
 import Home from './components/homepage/home';
 import PlanTrip from './components/planTrip/planTrip';
+import NearbyStations from './components/nearbyStations/nearbyStations';
 import Schedule from './components/schedule/schedule';
 import Profile from './components/profile/profile';
 
@@ -21,7 +22,8 @@ root.render(
       <Route path='/Home' element ={<Home />}/>
       <Route path='/Signup' element ={<Signup />}/>
       <Route path='/Login' element ={<Login />}/>
-      <Route path='/planTrip' element ={<PlanTrip />}/>
+      <Route path='/PlanTrip' element ={<PlanTrip />}/>
+      <Route path='/NearbyStations' element ={<NearbyStations />}/>
       <Route path='/schedule' element ={<Schedule />}/>
       <Route path='/profile' element ={<Profile />}/>
     </Routes>

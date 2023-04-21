@@ -105,13 +105,26 @@ app.post("/login", (req, res) => {
       }
     });
   });
+  
+  app.post("/nearbyStationCount", (req, res) => {
+    const miles = req.body.miles;
+    const lat = req.body.lat;
+    const lng = req.body.lng;
 
+    db.query("SELECT COUNT(*) AS count FROM Station WHERE ? >= ((3959 * acos(cos(radians( ? )) * cos(radians(latitude)) * cos(radians(longitude) - radians( ? )) + sin(radians( ? )) * sin(radians(latitude)))));", [parseFloat(miles), parseFloat(lat), parseFloat(lng), parseFloat(lat)], (error, result) => {
+      if (error) {
+        res.send({error: error});
+        return;
+      }
+      res.send(result);
+    })
+  });
 
   app.post("/nearestStation", (req, res) => {
-    const userLat = req.body.userLat;
-    const userLng = req.body.userLng;
+    const lat = req.body.lat;
+    const lng = req.body.lng;
 
-    db.query("SELECT station_name, (3959 * acos(cos(radians(?)) * cos(radians(latitude)) * cos(radians(longitude) - radians(?)) + sin(radians(?)) * sin(radians(latitude)))) AS distance FROM Station ORDER BY distance LIMIT 0, 1;", [userLat, userLng, userLat],(error, result) => {
+    db.query("SELECT station_name, (3959 * acos(cos(radians(?)) * cos(radians(latitude)) * cos(radians(longitude) - radians(?)) + sin(radians(?)) * sin(radians(latitude)))) AS distance FROM Station ORDER BY distance LIMIT 0, 1;", [lat, lng, lat],(error, result) => {
       if (error) {
         res.send({error: error});
         return;

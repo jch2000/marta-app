@@ -42,29 +42,6 @@ function routeInfo(response, start, destination) {
     return {lineIds, stationIndices, stationNames};
 }
 
-function FindNearestStation() {    
-    const successCallback = (position) => {
-        let userLat = position.coords.latitude;
-        let userLng = position.coords.longitude;
-
-        const handleSubmit = async () => {
-            await Axios.post("/nearestStation", {
-                userLat: userLat, 
-                userLng: userLng,
-            }).then ((response)=> {
-                const ele = document.getElementById('nearestStation');
-                ele.innerText = `Your nearest MARTA station is ${response.data[0].station_name} which is ${parseFloat(response.data[0].distance).toFixed(2)} miles away!`;
-            });
-        }
-        handleSubmit();
-    }
-    const errorCallback = (error) => {
-        console.log(error);
-    }
-    
-    navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
-}
-
 function fastestRoute(rInfo, start, destination, time) {
     let index = 0;
     let res = [];
@@ -114,9 +91,7 @@ function PlanTrip() {
     return (
         <div id="planTrip">
             <Navbar/>
-            <FindNearestStation/>
             <h1>Plan a Trip</h1>
-            <div id='nearestStation'></div>
             <form>
                 <label for="startStation">Start Station</label>
                 <select id="stations" name="stations" required onClick={(e) => {

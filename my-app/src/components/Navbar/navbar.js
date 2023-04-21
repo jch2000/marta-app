@@ -25,6 +25,9 @@ const Navbar = () => {
                     <Link to='/planTrip'>Plan a Trip</Link>
                 </li>
                 <li>
+                    <Link to='/nearbyStations'>Nearby Stations</Link>
+                </li>
+                <li>
                     <Link to='/schedule'>Schedule</Link>
                 </li>
                 <li>
