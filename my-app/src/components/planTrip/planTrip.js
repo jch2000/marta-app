@@ -91,7 +91,6 @@ function PlanTrip() {
     return (
         <div className='planTrip' id="planTrip">
             <Navbar/>
-            <FindNearestStation/>
             <div className='planTripBody'>
                 <h1>Plan a Trip</h1>
                 <div id='nearestStation'></div>
