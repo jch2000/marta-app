@@ -11,6 +11,8 @@ import PlanTrip from './components/planTrip/planTrip';
 import NearbyStations from './components/nearbyStations/nearbyStations';
 import Schedule from './components/schedule/schedule';
 import Profile from './components/profile/profile';
+import BreezeCard from './components/breezecard/breezecard';
+
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
@@ -26,6 +28,7 @@ root.render(
       <Route path='/NearbyStations' element ={<NearbyStations />}/>
       <Route path='/schedule' element ={<Schedule />}/>
       <Route path='/profile' element ={<Profile />}/>
+      <Route path='/breezecard' element ={<BreezeCard />}/>
     </Routes>
     </BrowserRouter>
   </React.StrictMode>

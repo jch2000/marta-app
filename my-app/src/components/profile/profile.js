@@ -1,3 +1,4 @@
+import './profile.css'
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
@@ -27,6 +28,7 @@ function Profile() {
   
     axios.get(`http://localhost:3001/profile/${customer_id}`).then((res) => {
       const customer = res.data[0];
+      console.log(customer)
       if (!isLoading && customer && customer.customer_id === customer_id) {
         setCustomer(customer);
         setUpdatedCustomer(customer);
@@ -90,9 +92,11 @@ function Profile() {
   return (
     <>
       <Navbar />
-      <div className="Profile">
+      <div className="profileBody">
         <h1>Profile</h1>
-        <div>
+        <div className='profile'>
+        <form>
+        <div className='labelInput'>
           <label htmlFor="first_name">First Name</label>
           {isEditing ? (
             <input
@@ -106,7 +110,7 @@ function Profile() {
             <span>{customer.first_name}</span>
           )}
         </div>
-        <div>
+        <div className='labelInput'>
           <label htmlFor="last_name">Last Name</label>
           {isEditing ? (
             <input
@@ -120,7 +124,7 @@ function Profile() {
             <span>{customer.last_name}</span>
           )}
         </div>
-        <div>
+        <div className='labelInput'>
          
 
         <label htmlFor="email">Email</label>
@@ -136,7 +140,7 @@ function Profile() {
         <span>{customer.email}</span>
         )}
         </div>
-        <div>
+        <div className='labelInput'>
         <label htmlFor="phone">Phone</label>
         {isEditing ? (
         <input
@@ -155,13 +159,15 @@ function Profile() {
         ) : (
         <button onClick={handleEditClick}>Edit</button>
         )}
-        <div>
+        </form>
+        <div className='deleteConfirm'>
         <label htmlFor="deleteConfirmation">Type "DELETE" to confirm account deletion:</label>
         <input type="text" id="deleteConfirmation" name="deleteConfirmation" value={deleteConfirmation} onChange={handleDeleteConfirmationChange} />
         </div>
         {deleteConfirmation === 'DELETE' && (
         <button onClick={handleDeleteClick}>Delete Account</button>
         )}
+        </div>
         </div>
         </>
 );

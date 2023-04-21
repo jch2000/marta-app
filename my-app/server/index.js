@@ -63,6 +63,8 @@ app.post("/login", (req, res) => {
         else if(result.length != 0) {
           console.log(result);
           console.log(`message:"Login successful" with email: ${email}`) ;
+          localStorage.setItem('email', response.data.email);
+          localStorage.setItem('id', response.data.customer_id);
         } else {
           console.log(`Wrong email/password! with email: ${email}, and password: ${password}`);
         }
@@ -146,6 +148,13 @@ app.post("/login", (req, res) => {
       }
 
       res.send(result);
+      /*Case where 1*/
+      /*db.query("SELECT * FROM TrainSchedule WHERE TrainSchedule.line_id = ? AND TrainSchedule.? >= '11:00:00' ORDER BY ? LIMIT 1;", [rInfo.valid_line_ids[0], rInfo.end_indices[0][0], time, rInfo.end_indices[0][0]], (error, result2) => {
+        if (error) {
+          res.send({error: error});
+          return;
+        }
+    });*/
   });
 });
 
@@ -165,105 +174,165 @@ app.post("/fastestRoute", (req, res) => {
   });
 });
 
-  app.post("/schedule", (req, res) => {
-    const stationInput = req.body.stationInput;
-    const lineInput = req.body.lineInput;
-    const dirInput = req.body.dirInput;
-    const routeLength = {"blue": 15, "green": 9, "red" : 19, "gold" : 18};
-    let stations = "";
-    let query_1_return;
-    let position = 'x';
-    let lineID = 0;
+app.post("/schedule", (req, res) => {
+  const stationInput = req.body.stationInput;
+  const lineInput = req.body.lineInput;
+  const dirInput = req.body.dirInput;
+  const routeLength = {"blue": 15, "green": 9, "red" : 19, "gold" : 18};
+  let stations = "";
+  let query_1_return;
+  let position = 'x';
+  let lineID = 0;
+
+  console.log(`user's input station: ${stationInput}, line: ${lineInput}, dir: ${dirInput}`);
+
+  const queryFunc = () =>{
+    if(stationInput) {
+      return new Promise((resolve, reject)=>{
+        db.query(
+          "SELECT position, line_id FROM StationHasRoute WHERE station_name = ? AND line_id = (SELECT id FROM Line WHERE color = ? AND direction = ?)",
+          [stationInput,lineInput, dirInput], 
+          (error, result) => {
+            if (error) {
+              console.log(error)
+              console.log(`Combination ${stationInput}, ${lineInput}, ${dirInput} is invalid`);
+            } else if (result.length == 0) {
+              console.log("Please pick a station");
+            } else {
+              query_1_return = result;
+              resolve();
+              console.log(result);
+            }
+          });
+      });
+    }
+    else {
+      return new Promise((resolve, reject)=>{
+        for (let index = 0; index < routeLength[lineInput]; index++) {
+          stations = stations + " st_"+(index+1).toString();
+          if (!(index+1 == routeLength[lineInput])) {
+            stations += ",";
+          }
+        } 
+        console.log(typeof stationInput, lineInput, dirInput, stations)
+        let query_1 = "SELECT" + stations + " FROM TrainSchedule WHERE line_id = (SELECT id FROM Line WHERE color = '" + lineInput + "' AND direction = '" + dirInput + "')";
+        db.query(
+          query_1,
+          (error, result) => {
+            if (error) {
+              console.log(error)
+              console.log(`Combination ${stations}, ${lineInput}, ${dirInput} is invalid`);
+            } else if (result.length == 0) {
+              console.log("Please pick a line");
+              alert("Invalid Line and Direction combination");
+            } else {
+              console.log("yay");
+              query_1_return = result;
+              resolve();
+              console.log(result);
+            }
+          });
+      });
+    }
+  };
   
-    console.log(`user's input station: ${stationInput}, line: ${lineInput}, dir: ${dirInput}`);
+  queryFunc().then((val)=>{
+    if(stationInput) {
+      position = query_1_return[0]["position"];
+      lineID = query_1_return[0]["line_id"];
+      console.log(position, lineID);
 
-    const queryFunc = () =>{
-      if(stationInput) {
-        return new Promise((resolve, reject)=>{
-          db.query(
-            "SELECT position, line_id FROM StationHasRoute WHERE station_name = ? AND line_id = (SELECT id FROM Line WHERE color = ? AND direction = ?)",
-            [stationInput,lineInput, dirInput], 
-            (error, result) => {
-              if (error) {
-                console.log(error)
-                console.log(`Combination ${stationInput}, ${lineInput}, ${dirInput} is invalid`);
-              } else if (result.length == 0) {
-                console.log("Please pick a station");
-              } else {
-                query_1_return = result;
-                resolve();
-                console.log(result);
-              }
-            });
-        });
-      }
-      else {
-        return new Promise((resolve, reject)=>{
-          for (let index = 0; index < routeLength[lineInput]; index++) {
-            stations = stations + " st_"+(index+1).toString();
-            if (!(index+1 == routeLength[lineInput])) {
-              stations += ",";
-            }
-          } 
-          console.log(typeof stationInput, lineInput, dirInput, stations)
-          let query_1 = "SELECT" + stations + " FROM TrainSchedule WHERE line_id = (SELECT id FROM Line WHERE color = '" + lineInput + "' AND direction = '" + dirInput + "')";
-          db.query(
-            query_1,
-            (error, result) => {
-              if (error) {
-                console.log(error)
-                console.log(`Combination ${stations}, ${lineInput}, ${dirInput} is invalid`);
-              } else if (result.length == 0) {
-                console.log("Please pick a line");
-                alert("Invalid Line and Direction combination");
-              } else {
-                console.log("yay");
-                query_1_return = result;
-                resolve();
-                console.log(result);
-              }
-            });
-        });
-      }
-    };
-    
-    queryFunc().then((val)=>{
-      if(stationInput) {
-        position = query_1_return[0]["position"];
-        lineID = query_1_return[0]["line_id"];
-        console.log(position, lineID);
-
-        let query_2 = "SELECT StationHasRoute.station_name, TrainSchedule." + position + " FROM TrainSchedule INNER JOIN StationHasRoute ON StationHasRoute.line_id = TrainSchedule.line_id WHERE station_name = '" + stationInput + "' AND StationHasRoute.line_id = " + lineID;
-        db.query(
-          query_2,
-          (error, result) => {
-            if (error) {
-              console.log(error);
-            } else {
-              console.log(`Here are the train time for ${stationInput} station on the ${dirInput} ${lineInput} line:`);
-              console.log(result);
-              return res.json({'pos': position, 'res': JSON.parse(JSON.stringify(result))});
-            }
+      let query_2 = "SELECT StationHasRoute.station_name, TrainSchedule." + position + " FROM TrainSchedule INNER JOIN StationHasRoute ON StationHasRoute.line_id = TrainSchedule.line_id WHERE station_name = '" + stationInput + "' AND StationHasRoute.line_id = " + lineID;
+      db.query(
+        query_2,
+        (error, result) => {
+          if (error) {
+            console.log(error);
+          } else {
+            console.log(`Here are the train time for ${stationInput} station on the ${dirInput} ${lineInput} line:`);
+            console.log(result);
+            return res.json({'pos': position, 'res': JSON.parse(JSON.stringify(result))});
           }
-        )
-      } else {
-        console.log(query_1_return);
-        let query_2 = "SELECT" + stations + " FROM Route WHERE line_id = (SELECT id FROM Line WHERE color = '" + lineInput + "' AND direction = '" + dirInput + "')";
-        db.query(
-          query_2,
-          (error, result) => {
-            if (error) {
-              console.log(error);
-            } else {
-              console.log(`Here are the train times on the ${dirInput} ${lineInput} line:`);
-              console.log(result);
-              return res.json({'st': stations, 'q2': result, 'q1': JSON.parse(JSON.stringify(query_1_return))});
-            }
+        }
+      )
+    } else {
+      console.log(query_1_return);
+      let query_2 = "SELECT" + stations + " FROM Route WHERE line_id = (SELECT id FROM Line WHERE color = '" + lineInput + "' AND direction = '" + dirInput + "')";
+      db.query(
+        query_2,
+        (error, result) => {
+          if (error) {
+            console.log(error);
+          } else {
+            console.log(`Here are the train times on the ${dirInput} ${lineInput} line:`);
+            console.log(result);
+            return res.json({'st': stations, 'q2': result, 'q1': JSON.parse(JSON.stringify(query_1_return))});
           }
-        )
-      }
-    });
-
-    
+        }
+      )
+    }
   });
 
+  
+});
+
+app.get("/breezecard/checkbalance", (req, res) => {
+  const cardNumber = req.query.cardNumber;
+
+  db.query("SELECT balance FROM breezecard WHERE ticket_id = ?",
+    [cardNumber],
+    (error, result) => {
+      if (error) {
+        res.send({ error: error });
+      } else if (result.length === 0) {
+        res.send({ message: "Card not found" });
+      } else {
+        const balance = result[0].balance;
+        res.send({ balance: balance });
+      }
+    });
+});
+
+app.post("/breezecard/purchase", (req, res) => {
+  const cardNumber = req.body.cardNumber;
+  const tripCount = req.body.tripCount;
+  const userEmail = req.body.userEmail;
+  
+  db.query("SELECT balance FROM breezecard WHERE ticket_id = ?",
+    [cardNumber],
+    (error, result) => {
+      if (error) {
+        res.send({ error: error });
+      } else if (result.length === 0) {
+        res.send({ message: "Card not found" });
+      } else {
+        const currentBalance = result[0].balance;
+        const tripPrice = 2.5;
+        const totalPrice = tripCount * tripPrice;
+        
+        if (currentBalance < totalPrice) {
+          res.send({ message: "Insufficient funds" });
+        } else {
+          const newBalance = currentBalance - totalPrice;
+
+          db.query("UPDATE breezecard SET balance = ? WHERE ticket_id = ?",
+          [newBalance, cardNumber],
+          (error, result) => {
+            if (error) {
+              res.send({ error: error });
+            } else {
+              db.query("INSERT INTO breezecard_purchase (ticket_id, trip_count, total_price, user_email) VALUES (?, ?, ?, ?)",
+              [cardNumber, tripCount, totalPrice, userEmail],
+              (error, result) => {
+                if (error) {
+                  res.send({ error: error });
+                } else {
+                  res.send([{ message: "Purchase successful" }, { newBalance: newBalance }]);
+                }
+              });
+            }
+          });
+        }
+      }
+    });
+});

@@ -13,6 +13,7 @@ function Home() {
                     <Link to='/signup'><button className="button">Create An Account</button></Link>
                     <Link to='/planTrip'><button className="button">Plan A Trip</button></Link>
                     <Link to='/schedule'><button className="button">View Schedules</button></Link>
+                    <Link to='/breezecard'><button className="button">BreezeCard</button></Link>
                 </div>
             </div>
         </div>

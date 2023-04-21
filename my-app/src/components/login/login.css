@@ -1,62 +1,61 @@
-
+.loginBody {
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+}
  .login {
     text-align: center;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 5px;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    border: solid black 1px;
-    border-radius: 20%;
-    width: 400px;
-    background-color: black;
+    padding: 2vw 5vw;
+    width: max-content;
+    /* margin: 5vw 15vw; */
+    border: solid black;
+    border-radius: 5px;
  }
  
- .auth-form-contatiner, .login-form, .register-form{
+ .auth-form-container {
     display: flex;
     flex-direction: column;
  }
 
- @media screen and(min-width:600px){
-    .auth-form-contatiner{
-        padding: auto;
-        border: 1px solid white;
-        border-radius: 10px;
-        margin: 0.5rem;
-    }
+ .login form {
+   display: flex;
+   flex-direction: column;
  }
 
- label{
-    text-align: left;
-    padding: 0.25rem 0;
+.labelInput {
+   display: flex;
+   flex-direction: row;
+   align-items: center;
+}
+
+.login label {
+   font-size: 2vw;
+   display: flex;
+   width: 30%;
  }
 
- input {
-    margin: 0.5rem 0;
-    padding: 1rem;
-    border: none;
-    border-radius: 10px;
+.login input {
+    margin: 1vw 0;
+    width: 69%;
+    padding: 0.2vw;
+    font-size: 1.5vw;
+    color: black;
+    border: solid #399fc8;
+    border-radius: 5px;
  }
 
- button{
+.login button{
     border:none; 
-    background-color: white;
-    padding: 20px; 
-    border-radius: 10px;
     cursor: pointer; 
- }
-
- button:active{
-    animation: fade 2s;
- }
-
- @keyframes fade {
-    0% { background-color: rgb(187,172,255);}
-    100%{ background-color: white;}
+    padding: 1.28vw;
+    font-size: 1.3vw;
+    background-color: #399fc8;
+    color: white;
+    border-radius: 5px;
  }
 
  .link-btn{
