@@ -7,11 +7,6 @@
     text-align: center;
 }
 
-#nearestStation {
-    font-size: 1.5vw;
-    margin: 1vw;
-}
-
 .planTripBody {
     display: flex;
     flex-direction: column;

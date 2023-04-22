@@ -62,29 +62,31 @@ function NearbyStations() {
     }
 
     return (
-        <div id="nearbyStations">
-            <Navbar/>
-            <FindNearestStation/>
-            <h1>Nearby Stations</h1>
-            <div id='nearest'></div>
-            <form>  
-            <button id='coordsButton' onClick={getLocation}>Get Location</button>              
-                <label htmlFor="lat">Latitude</label>
-                <input id='lat' type="text" required onChange={(e) => { 
-                    setLatInput(e.target.value);
-                }}/>
-                <label htmlFor="lng">Longitude</label>
-                <input id='lng' type="text" required onChange={(e) => { 
-                    setLngInput(e.target.value);
-                }}/>
-                <label htmlFor="miles">Miles</label>
-                <input id='miles' type="text" required onChange={(e) => { 
-                    setMilesInput(e.target.value);
-                }}/>
-                <br></br>
-                <button className="submit" type="submit" onClick={handleSubmit}>Search</button>
-            </form>
-            <div id='nearbyCount'></div>
+        <div className="nearbyStations">
+            <div className='nearbyStationsBody'>
+                <Navbar/>
+                <FindNearestStation/>
+                <h1>Nearby Stations</h1>
+                <div id='nearest'></div>
+                <form>  
+                    <button className='submit' onClick={getLocation}>Get Coordinates</button>     
+                    <label htmlFor="lat">Latitude</label>
+                    <input id='lat' type="text" required onChange={(e) => { 
+                        setLatInput(e.target.value);
+                    }}/>
+                    <label htmlFor="lng">Longitude</label>
+                    <input id='lng' type="text" required onChange={(e) => { 
+                        setLngInput(e.target.value);
+                    }}/>
+                    <label htmlFor="miles">Miles</label>
+                    <input id='miles' type="text" required onChange={(e) => { 
+                        setMilesInput(e.target.value);
+                    }}/>
+                    <br></br>
+                    <button className="submit" type="submit" onClick={handleSubmit}>Search</button>
+                </form>
+                <div id='nearbyCount'></div>
+            </div>
         </div>
     );
 }

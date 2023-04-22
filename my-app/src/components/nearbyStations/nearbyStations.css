@@ -1,24 +1,61 @@
-#nearbyStations {
-    text-align: center;
+#nearestStations {
+    font-size: 1.5vw;
+    margin: 1vw;
 }
 
-#nearbyStations #nearest {
-    margin: 20px 0;
+.nearbyStationsBody {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 form {
-    margin-top: 20px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    width: max-content;
+}
+
+.nearbyStations .labelInput {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+ }
+
+ .nearbyStations label {
+    margin-right: 0.5vw;
+    font-size: 1.5vw;
 }
   
-label {
-    display: block;
-    margin-bottom: 5px;
-}
-  
-button.submit {
-    padding: 10px 20px;
-    border: none;
+  .nearbyStations select {
+     width: 15vw;
+     /* height: 1.5vw; */
+     padding: 1vw;
+     font-size: 1.3vw;
+     color: black;
+     border: solid #f37521;
+     border-radius: 5px;
+     /* border-top-left-radius: 5px;
+     border-bottom-left-radius: 5px; */
+    }
+
+  .nearbyStations input {
+    margin: 1vw 0;
+    width: 69%;
+    padding: 0.2vw;
+    font-size: 1.5vw;
+    color: black;
+    border: solid #f37521;
     border-radius: 5px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
+ }
+ 
+  .nearbyStations .submit {
+     padding: 1.28vw;
+     font-size: 1.3vw;
+     background-color: #f37521;
+     border-radius: 5px;
+     margin-left: 1vw;
+     /* border-top-right-radius: 5px;
+     border-bottom-right-radius: 5px; */
+  }
