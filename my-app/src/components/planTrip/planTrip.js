@@ -18,7 +18,7 @@ function routeInfo(response, start, destination) {
         for (let j = 1; j < tupleLen; j++) {
             let currStation = data[j];
 
-            if (currStation == start) {
+            if (currStation === start) {
                 startSeen = true;
             }
 
@@ -27,7 +27,7 @@ function routeInfo(response, start, destination) {
                 names.push(currStation);
             }
 
-            if (currStation == destination) {
+            if (currStation === destination) {
                 if (startSeen == false)
                     break;
                 else {
@@ -42,52 +42,37 @@ function routeInfo(response, start, destination) {
     return {lineIds, stationIndices, stationNames};
 }
 
-function FindNearestStation() {    
-    const successCallback = (position) => {
-        let userLat = position.coords.latitude;
-        let userLng = position.coords.longitude;
-
-        const handleSubmit = async () => {
-            await Axios.post("/nearestStation", {
-                userLat: userLat, 
-                userLng: userLng,
-            }).then ((response)=> {
-                const ele = document.getElementById('nearestStation');
-                ele.innerText = `Your nearest MARTA station is ${response.data[0].station_name} which is ${parseFloat(response.data[0].distance).toFixed(2)} miles away!`;
-            });
-        }
-        handleSubmit();
-    }
-    const errorCallback = (error) => {
-        console.log(error);
-    }
-    
-    navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
-}
-
-function fastestRoute(rInfo, start, destination, time) {
+async function fastestRoute(rInfo, start, destination, time) {
     let index = 0;
-    let res = [];
+    let fastestRoutes = [];
     const handleSubmit = async () => {
-        await Axios.post("/fastestRoute", {
+        const response = await Axios.post("/fastestRoute", {
             rInfo: rInfo,
             start: start,
             destination: destination,
             time: time,
             index: index,
-        }).then((response)=> {
-            res.push(response);
         });
+        fastestRoutes.push(response.data[0]);
     }
 
     if (rInfo.lineIds.length == 1) {
-        handleSubmit();
-        console.log(res);
+        await handleSubmit();
+        return fastestRoutes[0];
     } else if (rInfo.lineIds.length == 2) {
-        handleSubmit();
+        await handleSubmit();
         index = 1;
-        handleSubmit();
-        console.log(res);
+        await handleSubmit();
+        console.log(fastestRoutes);
+
+        let route1 = fastestRoutes[0];
+        let route2 = fastestRoutes[1];
+        let route1Keys = Object.keys(route1);
+        let route2Keys = Object.keys(route2);
+
+        if (route1[route1Keys[3]] < route2[route2Keys[3]])
+            return route1;
+        return route2;
     }
 }
 
@@ -105,19 +90,32 @@ function PlanTrip() {
             time: time,
         }).then((response)=> {
             let rInfo = routeInfo(response, start, destination);
-            console.log('rInfo: ', rInfo);
+            console.log(rInfo);
 
-            fastestRoute(rInfo, start, destination, time);
+            fastestRoute(rInfo, start, destination, time).then((fastest) => {
+                let fastestKeys = Object.keys(fastest);
+                
+                const ele = document.getElementById('route');
+                let p = document.createElement('p');
+                ele.appendChild(p);
+                ele.innerText = `Get on ${fastest[fastestKeys[1]]} train heading ${fastest[fastestKeys[2]]}`;
+
+                let ul = document.createElement('ul');
+                for(let i = 3; i < fastest.length; i++) {
+                    let li = document.createElement('li');
+                    li.appendChild(document.createTextNode(fastest[fastestKeys[i]]));
+                    ul.appendChild(li);
+                }
+                ele.appendChild(ul);
+            });
         });
     }
 
     return (
         <div className='planTrip' id="planTrip">
             <Navbar/>
-            <FindNearestStation/>
             <div className='planTripBody'>
                 <h1>Plan a Trip</h1>
-                <div id='nearestStation'></div>
                 <form>
                     <div className='labelInput'> 
                     <label for="startStation">Start Station</label>
